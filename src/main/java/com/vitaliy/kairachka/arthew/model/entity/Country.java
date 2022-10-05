@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Country {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true)
   private String name;
   private Long regionCounter;
   private Long placeCounter;

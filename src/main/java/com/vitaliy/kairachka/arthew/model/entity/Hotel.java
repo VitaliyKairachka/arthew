@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ public class Hotel {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true)
   private String name;
   private Long numberCount;
   private Long photoCount;

@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
 import com.vitaliy.kairachka.arthew.model.enums.Role;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,6 +21,7 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true)
   private String login;
   private String password;
   private String fio;

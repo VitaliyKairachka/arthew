@@ -1,14 +1,11 @@
 package com.vitaliy.kairachka.arthew.websocket.controller;
 
-import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
-import com.vitaliy.kairachka.arthew.model.dto.requests.CreateCountryRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Country;
-import com.vitaliy.kairachka.arthew.service.CountryService;
 import lombok.AllArgsConstructor;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.util.HtmlUtils;
 
 /**
  * @author Vitaliy Kayrachka
@@ -16,11 +13,49 @@ import org.springframework.stereotype.Controller;
 @Controller
 @AllArgsConstructor
 public class CountryController {
-  private final CountryService countryService;
+//  private final CountryService countryService;
 
-  @MessageMapping("country/create")
-  @SendTo("topic/country/create")
-  public CountryDto create(CreateCountryRequest request) {
-    return countryService.createCountry(request);
+  @MessageMapping("/hello")
+  @SendTo("/topic/greetings")
+  public Greeting greeting(HelloMessage message) throws Exception {
+    System.out.println("HIIII");
+    return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
   }
+}
+
+class HelloMessage {
+
+  private String name;
+
+  public HelloMessage() {
+  }
+
+  public HelloMessage(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+}
+
+class Greeting {
+
+  private String content;
+
+  public Greeting() {
+  }
+
+  public Greeting(String content) {
+    this.content = content;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
 }

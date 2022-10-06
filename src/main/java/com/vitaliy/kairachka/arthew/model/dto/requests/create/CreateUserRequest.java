@@ -1,4 +1,4 @@
-package com.vitaliy.kairachka.arthew.model.dto.requests;
+package com.vitaliy.kairachka.arthew.model.dto.requests.create;
 
 import com.vitaliy.kairachka.arthew.model.enums.Role;
 import lombok.Data;

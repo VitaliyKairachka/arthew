@@ -15,7 +15,7 @@ public interface CountryService {
 
   CountryDto createCountry(CountryDto countryDto);
 
-  CountryDto updateCountry(CountryDto countryDto);
+  CountryDto updateCountry(Long id ,CountryDto countryDto);
 
   void deleteCountry(Long id);
 }

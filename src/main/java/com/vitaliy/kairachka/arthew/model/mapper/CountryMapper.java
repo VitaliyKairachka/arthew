@@ -20,8 +20,14 @@ public interface CountryMapper {
   @Mapping(source = "hotelCounter", target = "hotelCounter")
   Country toEntityFromDto(CountryDto dto);
 
+  @Mapping(source = "id", target = "id")
+  @Mapping(source = "name", target = "name")
+  @Mapping(source = "regionCounter", target = "regionCounter")
+  @Mapping(source = "placeCounter", target = "placeCounter")
+  @Mapping(source = "hotelCounter", target = "hotelCounter")
   CountryDto toDtoFromEntity(Country entity);
 
+  @Mapping(source = "name", target = "name")
   CountryDto toDtoFromRequest(CreateCountryRequest request);
 
   CreateCountryRequest toRequestFromDto(CountryDto dto);

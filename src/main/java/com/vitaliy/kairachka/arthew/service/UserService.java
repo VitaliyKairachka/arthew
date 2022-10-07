@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface UserService {
 
   UserDto getUserByName(String name);
 
-  UserDto createUser(UserDto userDto);
+  UserDto createUser(CreateUserRequest createUserRequest);
 
   UserDto updateUser(UserDto userDto);
 

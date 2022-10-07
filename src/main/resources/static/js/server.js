@@ -8,7 +8,6 @@ function setConnected(connected) {
   } else {
     $("#conversation").hide();
   }
-  // $("#greetings").html("");
 }
 
 function connect() {
@@ -18,8 +17,7 @@ function connect() {
     setConnected(true);
     console.log('Connected: ' + frame);
     stompClient.subscribe('/topic/login', function (login) {
-      window.location.href = "StartPage.html";
-      // login(JSON.parse(login.booleanValue).content);
+      login(JSON.parse(login.booleanValue).content);
     });
   });
 }
@@ -31,31 +29,3 @@ function disconnect() {
   setConnected(false);
   console.log("Disconnected");
 }
-
-function sendName() {
-  stompClient.send("/app/login", {},
-      JSON.stringify({
-        'login': $("#login").val(),
-        'password': $("#password").val()
-      }));
-}
-
-function login(boolean) {
-  window.location.href = "StartPage.html";
-}
-
-$(function () {
-  $("form").on('submit', function (e) {
-    e.preventDefault();
-  });
-  $("#connect").click(function () {
-    connect();
-    // sendName();
-  });
-  $("#disconnect").click(function () {
-    disconnect();
-  });
-  $("#send").click(function () {
-    sendName();
-  });
-});

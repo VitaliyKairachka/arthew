@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.model.mapper.UserMapper;
 import com.vitaliy.kairachka.arthew.repository.UserRepository;
@@ -14,15 +15,11 @@ import org.springframework.stereotype.Service;
  * @author Vitaliy Kayrachka
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-
-  public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-    this.userRepository = userRepository;
-    this.userMapper = userMapper;
-  }
 
   @Override
   public Boolean login(LoginUserRequest request) {
@@ -46,7 +43,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto createUser(UserDto userDto) {
+  public UserDto createUser(CreateUserRequest createUserRequest) {
     return null;
   }
 

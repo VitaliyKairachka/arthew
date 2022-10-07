@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+  <script type="text/javascript" th:src="@{/js/server.js}"></script>
+  <script type="text/javascript" th:src="@{/js/sender.js}"></script>
+</head>
+<body>
+<div style="text-align:center">
+  <button th:onclick="connect()">Connect</button>
+  <button th:onclick="disconnect()">Disconnect</button>
+  <h1>Arthew</h1>
+  <h2>Storage system for information about hotels around the world</h2>
+  <hr>
+  <h3>Please login</h3>
+  <br>
+  <form th:object="${login}">
+    <table>
+      <tr>
+        <td>Login:</td>
+        <td><input type="text" th:field="*{login}"/></td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td><input type="text" th:field="*{password}"/></td>
+      </tr>
+      <tr>
+        <button type="submit" name="submit" value="value" class="link-button" th:onclick="sendMessage(${login})">Login</button>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

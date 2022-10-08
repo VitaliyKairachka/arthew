@@ -6,7 +6,9 @@ import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.model.mapper.UserMapper;
 import com.vitaliy.kairachka.arthew.repository.UserRepository;
 import com.vitaliy.kairachka.arthew.service.UserService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Vitaliy Kayrachka
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<UserDto> getAllUsers(Pageable pageable) {
+  public List<UserDto> getAllUsers() {
     return null;
   }
 
@@ -48,9 +51,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto updateUser(UserDto userDto) {
+  public UserDto updateUser(Long id, UserDto userDto) {
     return null;
   }
+
 
   @Override
   public void deleteUser(Long id) {

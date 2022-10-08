@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public interface HotelService {
 
   HotelDto getHotelByName(String name);
 
-  HotelDto createHotel(HotelDto hotelDto);
+  HotelDto createHotel(CreateHotelRequest request);
 
   HotelDto updateHotel(Long id, HotelDto hotelDto);
 

@@ -1,8 +1,11 @@
 package com.vitaliy.kairachka.arthew.model.dto;
 
+import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * @author Vitaliy Kayrachka
@@ -10,6 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 public class CountryDto {
 
   private Long id;

@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface NumberRepository extends JpaRepository<Number, Long>, JpaSpecificationExecutor<Number> {
 
+  Number findNumberByName(String name);
 }

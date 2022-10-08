@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public interface CountryService {
 
   CountryDto getCountryByName(String name);
 
-  CountryDto createCountry(CountryDto countryDto);
+  CountryDto createCountry(CreateCountryRequest request);
 
   CountryDto updateCountry(Long id, CountryDto countryDto);
 

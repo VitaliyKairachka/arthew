@@ -4,9 +4,8 @@ import com.vitaliy.kairachka.arthew.model.dto.UserDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.service.UserService;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -29,8 +28,8 @@ public class UserController {
 
   @MessageMapping("/user/getAll")
   @SendTo("/topic/user/getAll")
-  public Page<UserDto> getAll(@Payload Pageable pageable) {
-    return userService.getAllUsers(pageable);
+  public List<UserDto> getAll() {
+    return userService.getAllUsers();
   }
 
   @MessageMapping("/user/get")

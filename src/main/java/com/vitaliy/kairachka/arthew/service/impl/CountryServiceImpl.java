@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
 import com.vitaliy.kairachka.arthew.model.mapper.CountryMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.service.CountryService;
@@ -38,7 +39,8 @@ class CountryServiceImpl implements CountryService {
 
   @Override
   @Transactional
-  public CountryDto createCountry(CountryDto countryDto) {
+  public CountryDto createCountry(CreateCountryRequest request) {
+    var countryDto = countryMapper.toDtoFromRequest(request);
     var entity = countryMapper.toEntityFromDto(countryDto);
     return countryMapper.toDtoFromEntity(countryRepository.save(entity));
   }
@@ -47,8 +49,12 @@ class CountryServiceImpl implements CountryService {
   @Transactional
   public CountryDto updateCountry(Long id, CountryDto countryDto) {
     var target = countryRepository.findById(id);
-    var update = countryMapper.toEntityFromDto(countryMapper.merge(countryDto, target));
-    return countryMapper.toDtoFromEntity(countryRepository.save(update));
+    if (target.isPresent()) {
+      var update = countryMapper.toEntityFromDto(countryMapper.merge(countryDto, target.get()));
+      return countryMapper.toDtoFromEntity(countryRepository.save(update));
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override

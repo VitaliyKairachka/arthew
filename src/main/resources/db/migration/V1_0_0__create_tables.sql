@@ -1,9 +1,9 @@
 CREATE TABLE "tasks"
 (
-    "id"           BIGINT       NOT NULL,
+    "id"           BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"         VARCHAR(255) NOT NULL,
     "description"  VARCHAR(255) NOT NULL,
-    "user_id"      BIGINT NULL,
+    "user_id"      BIGINT       NULL,
     "notification" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
@@ -11,7 +11,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "numbers"
 (
-    "id"          BIGINT       NOT NULL,
+    "id"          BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"        VARCHAR(255) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
     "hotel_id"    BIGINT       NOT NULL,
@@ -22,7 +22,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "hotels"
 (
-    "id"           BIGINT       NOT NULL,
+    "id"           BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"         VARCHAR(255) NOT NULL,
     "place_id"     BIGINT       NOT NULL,
     "number_count" BIGINT       NOT NULL,
@@ -33,7 +33,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "places"
 (
-    "id"          BIGINT       NOT NULL,
+    "id"          BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"        VARCHAR(255) NOT NULL,
     "region_id"   BIGINT       NOT NULL,
     "hotel_count" BIGINT       NOT NULL,
@@ -44,7 +44,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "regions"
 (
-    "id"          BIGINT       NOT NULL,
+    "id"          BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"        VARCHAR(255) NOT NULL,
     "country_id"  BIGINT       NOT NULL,
     "place_count" BIGINT       NOT NULL,
@@ -55,7 +55,7 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "countries"
 (
-    "id"             BIGINT       NOT NULL,
+    "id"             BIGINT       GENERATED ALWAYS AS IDENTITY,
     "name"           VARCHAR(255) NOT NULL,
     "region_counter" BIGINT       NOT NULL,
     "place_count"    BIGINT       NOT NULL,
@@ -66,12 +66,12 @@ ALTER TABLE
     ADD PRIMARY KEY ("id");
 CREATE TABLE "users"
 (
-    "id"       BIGINT       NOT NULL,
-    "login"    VARCHAR(255) NOT NULL,
-    "password" VARCHAR(255) NOT NULL,
-    "fio"      VARCHAR(255) NOT NULL,
+    "id"       BIGINT                    GENERATED ALWAYS AS IDENTITY,
+    "login"    VARCHAR(255)              NOT NULL,
+    "password" VARCHAR(255)              NOT NULL,
+    "fio"      VARCHAR(255)              NOT NULL,
     "role"     VARCHAR(255) CHECK
-        ("role" IN (''))    NOT NULL
+        ("role" IN ('ADMIN', 'MANAGER')) NOT NULL
 );
 ALTER TABLE
     "users"

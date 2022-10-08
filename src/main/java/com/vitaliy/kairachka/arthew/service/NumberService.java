@@ -11,7 +11,7 @@ public interface NumberService {
 
   List<NumberDto> getAllNumbers();
 
-  NumberDto getNumberByName(String name);
+  NumberDto getNumberById(Long id);
 
   NumberDto createNumber(CreateNumberRequest request);
 

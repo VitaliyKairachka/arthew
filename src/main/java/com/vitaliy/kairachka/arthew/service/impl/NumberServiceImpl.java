@@ -34,9 +34,13 @@ public class NumberServiceImpl implements NumberService {
   }
 
   @Override
-  public NumberDto getNumberByName(String name) {
-    var entity = numberRepository.findNumberByName(name);
-    return numberMapper.toDtoFromEntity(entity);
+  public NumberDto getNumberById(Long id) {
+    var entity = numberRepository.findById(id);
+    if (entity.isPresent()) {
+      return numberMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override

@@ -2,14 +2,15 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.PlaceDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePlaceRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Place;
 import com.vitaliy.kairachka.arthew.service.PlaceService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -23,8 +24,8 @@ public class PlaceController {
 
   @MessageMapping("/place")
   @SendTo("/topic/messages")
-  public List<PlaceDto> getAll() {
-    return placeService.getAllPlaces();
+  public Page<Place> getAll(@Payload Pageable pageable) {
+    return placeService.getAllPlaces(pageable);
   }
 
   @MessageMapping("/place/{id}")

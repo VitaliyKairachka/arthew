@@ -2,14 +2,16 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
  */
 public interface TaskService {
 
-  List<TaskDto> getAllTasks();
+  Page<Task> getAllTasks(Pageable pageable);
 
   TaskDto getTaskById(Long id);
 

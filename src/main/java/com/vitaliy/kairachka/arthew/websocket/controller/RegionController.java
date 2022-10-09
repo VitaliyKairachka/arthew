@@ -2,9 +2,11 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.RegionDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateRegionRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Region;
 import com.vitaliy.kairachka.arthew.service.RegionService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,8 +24,8 @@ public class RegionController {
 
   @MessageMapping("/region")
   @SendTo("/topic/messages")
-  public List<RegionDto> getAll() {
-    return regionService.getAllRegions();
+  public Page<Region> getAll(@Payload Pageable pageable) {
+    return regionService.getAllRegions(pageable);
   }
 
   @MessageMapping("/country/{id}")

@@ -2,9 +2,11 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Country;
 import com.vitaliy.kairachka.arthew.service.CountryService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,8 +24,8 @@ public class CountryController {
 
   @MessageMapping("/country")
   @SendTo("/topic/messages")
-  public List<CountryDto> getAll() {
-    return countryService.getAllCountries();
+  public Page<Country> getAll(@Payload Pageable pageable) {
+    return countryService.getAllCountries(pageable);
   }
 
   @MessageMapping("/country/{id}")

@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Country;
 import com.vitaliy.kairachka.arthew.model.mapper.CountryMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.service.CountryService;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +30,9 @@ class CountryServiceImpl implements CountryService {
 
   @Override
   @Cacheable(value = "countries")
-  public List<CountryDto> getAllCountries() {
+  public Page<Country> getAllCountries(Pageable pageable) {
     log.info("Get all countries");
-    return countryRepository.findAll()
-        .stream()
-        .map(countryMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return countryRepository.findAll(pageable);
   }
 
   @Override

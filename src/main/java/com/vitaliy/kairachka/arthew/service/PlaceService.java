@@ -2,14 +2,16 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.PlaceDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePlaceRequest;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.Place;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
  */
 public interface PlaceService {
 
-  List<PlaceDto> getAllPlaces();
+  Page<Place> getAllPlaces(Pageable pageable);
 
   PlaceDto getPlaceById(Long id);
 

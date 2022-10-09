@@ -2,16 +2,17 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.NumberDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateNumberRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Number;
 import com.vitaliy.kairachka.arthew.model.mapper.NumberMapper;
 import com.vitaliy.kairachka.arthew.repository.HotelRepository;
 import com.vitaliy.kairachka.arthew.repository.NumberRepository;
 import com.vitaliy.kairachka.arthew.service.NumberService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +30,9 @@ public class NumberServiceImpl implements NumberService {
 
   @Override
   @Cacheable(value = "numbers")
-  public List<NumberDto> getAllNumbers() {
+  public Page<Number> getAllNumbers(Pageable pageable) {
     log.info("Get all numbers");
-    return numberRepository.findAll()
-        .stream()
-        .map(numberMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return numberRepository.findAll(pageable);
   }
 
   @Override

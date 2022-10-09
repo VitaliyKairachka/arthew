@@ -2,16 +2,17 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.RegionDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateRegionRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Region;
 import com.vitaliy.kairachka.arthew.model.mapper.RegionMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.repository.RegionRepository;
 import com.vitaliy.kairachka.arthew.service.RegionService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +31,9 @@ public class RegionServiceImpl implements RegionService {
 
   @Override
   @Cacheable(value = "regions")
-  public List<RegionDto> getAllRegions() {
+  public Page<Region> getAllRegions(Pageable pageable) {
     log.info("Get all regions");
-    return regionRepository.findAll()
-        .stream()
-        .map(regionMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return regionRepository.findAll(pageable);
   }
 
   @Override

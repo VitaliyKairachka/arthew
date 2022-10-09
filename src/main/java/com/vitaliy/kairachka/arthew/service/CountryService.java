@@ -2,14 +2,16 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.Country;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
  */
 public interface CountryService {
 
-  List<CountryDto> getAllCountries();
+  Page<Country> getAllCountries(Pageable pageable);
 
   CountryDto getCountryById(Long id);
 

@@ -2,16 +2,17 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.PlaceDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePlaceRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Place;
 import com.vitaliy.kairachka.arthew.model.mapper.PlaceMapper;
 import com.vitaliy.kairachka.arthew.repository.PlaceRepository;
 import com.vitaliy.kairachka.arthew.repository.RegionRepository;
 import com.vitaliy.kairachka.arthew.service.PlaceService;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +30,9 @@ public class PlaceServiceImpl implements PlaceService {
 
   @Override
   @Cacheable(value = "places")
-  public List<PlaceDto> getAllPlaces() {
+  public Page<Place> getAllPlaces(Pageable pageable) {
     log.info("Get all places");
-    return placeRepository.findAll()
-        .stream()
-        .map(placeMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return placeRepository.findAll(pageable);
   }
 
   @Override

@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Hotel;
 import com.vitaliy.kairachka.arthew.model.mapper.HotelMapper;
 import com.vitaliy.kairachka.arthew.repository.HotelRepository;
 import com.vitaliy.kairachka.arthew.repository.PlaceRepository;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +32,9 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   @Cacheable(value = "hotels")
-  public List<HotelDto> getAllHotels() {
+  public Page<Hotel> getAllHotels(Pageable pageable) {
     log.info("Get all hotels");
-    return hotelRepository.findAll()
-        .stream()
-        .map(hotelMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return hotelRepository.findAll(pageable);
   }
 
   @Override

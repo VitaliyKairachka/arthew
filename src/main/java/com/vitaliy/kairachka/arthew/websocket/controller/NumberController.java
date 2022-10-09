@@ -2,9 +2,11 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.NumberDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateNumberRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Number;
 import com.vitaliy.kairachka.arthew.service.NumberService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,8 +24,8 @@ public class NumberController {
 
   @MessageMapping("/number")
   @SendTo("/topic/messages")
-  public List<NumberDto> getAll() {
-    return numberService.getAllNumbers();
+  public Page<Number> getAll(@Payload Pageable pageable) {
+    return numberService.getAllNumbers(pageable);
   }
 
   @MessageMapping("number/{id}")

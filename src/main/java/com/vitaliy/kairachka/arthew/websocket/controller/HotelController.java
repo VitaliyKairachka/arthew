@@ -2,9 +2,11 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Hotel;
 import com.vitaliy.kairachka.arthew.service.HotelService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,8 +24,8 @@ public class HotelController {
 
   @MessageMapping("/hotel")
   @SendTo("/topic/messages")
-  public List<HotelDto> getAll() {
-    return hotelService.getAllHotels();
+  public Page<Hotel> getAll(@Payload Pageable pageable) {
+    return hotelService.getAllHotels(pageable);
   }
 
   @MessageMapping("/hotel/{id}")

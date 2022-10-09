@@ -4,7 +4,9 @@ import com.vitaliy.kairachka.arthew.model.dto.UserDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.response.ResponseUserLogin;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
@@ -13,7 +15,7 @@ public interface UserService {
 
   ResponseUserLogin login(LoginUserRequest request);
 
-  List<UserDto> getAllUsers();
+  Page<User> getAllUsers(Pageable pageable);
 
   UserDto getUserById(Long id);
 

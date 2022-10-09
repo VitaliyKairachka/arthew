@@ -6,6 +6,7 @@ import com.vitaliy.kairachka.arthew.model.dto.UserDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.response.ResponseUserLogin;
+import com.vitaliy.kairachka.arthew.model.entity.User;
 import com.vitaliy.kairachka.arthew.model.mapper.UserMapper;
 import com.vitaliy.kairachka.arthew.repository.UserRepository;
 import com.vitaliy.kairachka.arthew.service.UserService;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +44,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Cacheable(value = "users")
-  public List<UserDto> getAllUsers() {
+  public Page<User> getAllUsers(Pageable pageable) {
     log.info("Get all users");
-    return userRepository.findAll()
-        .stream()
-        .map(userMapper::toDtoFromEntity)
-        .collect(Collectors.toList());
+    return userRepository.findAll(pageable);
   }
 
   @Override

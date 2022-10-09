@@ -2,14 +2,16 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.NumberDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateNumberRequest;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.Number;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
  */
 public interface NumberService {
 
-  List<NumberDto> getAllNumbers();
+  Page<Number> getAllNumbers(Pageable pageable);
 
   NumberDto getNumberById(Long id);
 

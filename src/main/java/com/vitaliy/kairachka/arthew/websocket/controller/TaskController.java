@@ -2,9 +2,11 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
+import com.vitaliy.kairachka.arthew.model.entity.Task;
 import com.vitaliy.kairachka.arthew.service.TaskService;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,8 +24,8 @@ public class TaskController {
 
   @MessageMapping("/task")
   @SendTo("/topic/messages")
-  public List<TaskDto> getAll() {
-    return taskService.getAllTasks();
+  public Page<Task> getAll(@Payload Pageable pageable) {
+    return taskService.getAllTasks(pageable);
   }
 
   @MessageMapping("/task/{id}")

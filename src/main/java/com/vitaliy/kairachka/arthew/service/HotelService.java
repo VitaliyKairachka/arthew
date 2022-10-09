@@ -2,14 +2,16 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
-import java.util.List;
+import com.vitaliy.kairachka.arthew.model.entity.Hotel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Vitaliy Kayrachka
  */
 public interface HotelService {
 
-  List<HotelDto> getAllHotels();
+  Page<Hotel> getAllHotels(Pageable pageable);
 
   HotelDto getHotelById(Long id);
 

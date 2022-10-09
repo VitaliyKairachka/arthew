@@ -7,10 +7,12 @@ import com.vitaliy.kairachka.arthew.model.mapper.UserMapper;
 import com.vitaliy.kairachka.arthew.repository.UserRepository;
 import com.vitaliy.kairachka.arthew.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
@@ -32,7 +34,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDto> getAllUsers() {
-    return null;
+    return userRepository.findAll()
+        .stream()
+        .map(userMapper::toDtoFromEntity)
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -59,5 +64,10 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(Long id) {
 
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    return userRepository.findUserByLogin(login);
   }
 }

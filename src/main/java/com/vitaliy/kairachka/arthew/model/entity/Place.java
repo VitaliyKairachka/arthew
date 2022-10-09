@@ -8,8 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,20 +26,23 @@ import org.hibernate.annotations.Formula;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+@Table(name = "places")
 public class Place {
 
   @Id
+  @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true)
+  @Column(name = "name", unique = true)
   private String name;
 
   @ColumnDefault("0")
-  @Formula(value = "(SELECT COUNT(*) FROM hotel t WHERE t.place_id=id)")
+  @Column(name = "hotel_count")
   private Long hotelCount;
 
   @ColumnDefault("0")
+  @Column(name = "photo_count")
   private Long photoCount;
 
   @OneToOne(fetch = FetchType.LAZY)

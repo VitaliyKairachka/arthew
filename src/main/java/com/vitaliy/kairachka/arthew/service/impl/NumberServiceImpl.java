@@ -30,6 +30,7 @@ public class NumberServiceImpl implements NumberService {
   @Override
   @Cacheable(value = "numbers")
   public List<NumberDto> getAllNumbers() {
+    log.info("Get all numbers");
     return numberRepository.findAll()
         .stream()
         .map(numberMapper::toDtoFromEntity)
@@ -41,8 +42,10 @@ public class NumberServiceImpl implements NumberService {
   public NumberDto getNumberById(Long id) {
     var entity = numberRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get number with id: {}", id);
       return numberMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Number not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }
@@ -58,6 +61,7 @@ public class NumberServiceImpl implements NumberService {
       var hotel = hotelRepository.findById(hotelDto.getId());
       hotel.ifPresent(entity::setHotel);
     }
+    log.info("Create new number");
     return numberMapper.toDtoFromEntity(numberRepository.save(entity));
   }
 
@@ -68,8 +72,10 @@ public class NumberServiceImpl implements NumberService {
     var target = numberRepository.findById(id);
     if (target.isPresent()) {
       var update = numberMapper.toEntityFromDto(numberMapper.merge(numberDto, target.get()));
+      log.info("Number update with id: {}", id);
       return numberMapper.toDtoFromEntity(numberRepository.save(update));
     } else {
+      log.info("Number not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

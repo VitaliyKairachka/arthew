@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Cacheable(value = "users")
   public List<UserDto> getAllUsers() {
+    log.info("Get all users");
     return userRepository.findAll()
         .stream()
         .map(userMapper::toDtoFromEntity)
@@ -53,8 +54,10 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserById(Long id) {
     var entity = userRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get user with id: {}", id);
       return userMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("User not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }
@@ -64,8 +67,10 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserByLogin(String login) {
     var entity = userRepository.findUserByLogin(login);
     if (entity.isPresent()) {
+      log.info("Get user with login: {}", login);
       return userMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("User not found with login: {}", login);
       throw new RuntimeException(); //TODO
     }
   }
@@ -76,6 +81,7 @@ public class UserServiceImpl implements UserService {
   public UserDto createUser(CreateUserRequest createUserRequest) {
     var userDto = userMapper.toDtoFromRequest(createUserRequest);
     var entity = userMapper.toEntityFromDto(userDto);
+    log.info("Create new user with login: {}", entity.getLogin());
     return userMapper.toDtoFromEntity(userRepository.save(entity));
   }
 
@@ -86,8 +92,10 @@ public class UserServiceImpl implements UserService {
     var target = userRepository.findById(id);
     if (target.isPresent()) {
       var update = userMapper.toEntityFromDto(userMapper.merge(userDto, target.get()));
+      log.info("User update with id: {}", id);
       return userMapper.toDtoFromEntity(userRepository.save(update));
     } else {
+      log.info("User not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

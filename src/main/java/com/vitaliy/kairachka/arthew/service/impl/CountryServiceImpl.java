@@ -28,6 +28,7 @@ class CountryServiceImpl implements CountryService {
   @Override
   @Cacheable(value = "countries")
   public List<CountryDto> getAllCountries() {
+    log.info("Get all countries");
     return countryRepository.findAll()
         .stream()
         .map(countryMapper::toDtoFromEntity)
@@ -39,8 +40,10 @@ class CountryServiceImpl implements CountryService {
   public CountryDto getCountryById(Long id) {
     var entity = countryRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get country with id: {}", id);
       return countryMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Country not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }
@@ -50,8 +53,10 @@ class CountryServiceImpl implements CountryService {
   public CountryDto getCountryByName(String name) {
     var entity = countryRepository.findCountryByName(name);
     if (entity.isPresent()) {
+      log.info("Get country with name: {}", name);
       return countryMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Country not found with name: {}", name);
       throw new RuntimeException(); //TODO
     }
   }
@@ -62,19 +67,21 @@ class CountryServiceImpl implements CountryService {
   public CountryDto createCountry(CreateCountryRequest request) {
     var countryDto = countryMapper.toDtoFromRequest(request);
     var entity = countryMapper.toEntityFromDto(countryDto);
+    log.info("Create new country with name: {}", entity.getName());
     return countryMapper.toDtoFromEntity(countryRepository.save(entity));
   }
 
   @Override
   @Transactional
   @CacheEvict(value = "countries", allEntries = true)
-
   public CountryDto updateCountry(Long id, CountryDto countryDto) {
     var target = countryRepository.findById(id);
     if (target.isPresent()) {
       var update = countryMapper.toEntityFromDto(countryMapper.merge(countryDto, target.get()));
+      log.info("Country update with id: {}", id);
       return countryMapper.toDtoFromEntity(countryRepository.save(update));
     } else {
+      log.info("Country not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

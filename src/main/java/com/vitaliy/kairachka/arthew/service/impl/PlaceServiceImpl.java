@@ -30,6 +30,7 @@ public class PlaceServiceImpl implements PlaceService {
   @Override
   @Cacheable(value = "places")
   public List<PlaceDto> getAllPlaces() {
+    log.info("Get all places");
     return placeRepository.findAll()
         .stream()
         .map(placeMapper::toDtoFromEntity)
@@ -41,8 +42,10 @@ public class PlaceServiceImpl implements PlaceService {
   public PlaceDto getPlaceById(Long id) {
     var entity = placeRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get place with id: {}", id);
       return placeMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Place not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }
@@ -52,8 +55,10 @@ public class PlaceServiceImpl implements PlaceService {
   public PlaceDto getPlaceByName(String name) {
     var entity = placeRepository.findPlaceByName(name);
     if (entity.isPresent()) {
+      log.info("Get place with name: {}", name);
       return placeMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Place not found with name: {}", name);
       throw new RuntimeException(); //TODO
     }
   }
@@ -69,6 +74,7 @@ public class PlaceServiceImpl implements PlaceService {
       var region = regionRepository.findById(regionDto.getId());
       region.ifPresent(entity::setRegion);
     }
+    log.info("Create new place with name: {}", entity.getName());
     return placeMapper.toDtoFromEntity(placeRepository.save(entity));
   }
 
@@ -79,8 +85,10 @@ public class PlaceServiceImpl implements PlaceService {
     var target = placeRepository.findById(id);
     if (target.isPresent()) {
       var update = placeMapper.toEntityFromDto(placeMapper.merge(placeDto, target.get()));
+      log.info("Place update with id: {}", id);
       return placeMapper.toDtoFromEntity(placeRepository.save(update));
     } else {
+      log.info("Place not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

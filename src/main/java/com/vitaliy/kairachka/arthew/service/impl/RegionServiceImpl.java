@@ -31,6 +31,7 @@ public class RegionServiceImpl implements RegionService {
   @Override
   @Cacheable(value = "regions")
   public List<RegionDto> getAllRegions() {
+    log.info("Get all regions");
     return regionRepository.findAll()
         .stream()
         .map(regionMapper::toDtoFromEntity)
@@ -42,8 +43,10 @@ public class RegionServiceImpl implements RegionService {
   public RegionDto getRegionById(Long id) {
     var entity = regionRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get region with id: {}", id);
       return regionMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Region not found with id: {}", id);
       throw new RuntimeException();  //TODO
     }
   }
@@ -53,8 +56,10 @@ public class RegionServiceImpl implements RegionService {
   public RegionDto getRegionByName(String name) {
     var entity = regionRepository.findRegionByName(name);
     if (entity.isPresent()) {
+      log.info("Get region with name: {}", name);
       return regionMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Region not found with name: {}", name);
       throw new RuntimeException();  //TODO
     }
   }
@@ -70,6 +75,7 @@ public class RegionServiceImpl implements RegionService {
       var country = countryRepository.findById(countryDto.getId());
       country.ifPresent(entity::setCountry);
     }
+    log.info("Create new region with name: {}", entity.getName());
     return regionMapper.toDtoFromEntity(regionRepository.save(entity));
   }
 
@@ -82,7 +88,8 @@ public class RegionServiceImpl implements RegionService {
       var update = regionMapper.toEntityFromDto(regionMapper.merge(regionDto, target.get()));
       return regionMapper.toDtoFromEntity(regionRepository.save(update));
     } else {
-      throw new RuntimeException();
+      log.info("Region not found with id: {}", id);
+      throw new RuntimeException(); //TODO
     }
   }
 

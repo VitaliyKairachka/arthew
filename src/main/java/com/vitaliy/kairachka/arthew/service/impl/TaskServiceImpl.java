@@ -31,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   @Cacheable(value = "tasks")
   public List<TaskDto> getAllTasks() {
+    log.info("Get all tasks");
     return taskRepository.findAll()
         .stream()
         .map(taskMapper::toDtoFromEntity)
@@ -42,8 +43,10 @@ public class TaskServiceImpl implements TaskService {
   public TaskDto getTaskById(Long id) {
     var entity = taskRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get task with id: {}", id);
       return taskMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Task not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }
@@ -53,8 +56,10 @@ public class TaskServiceImpl implements TaskService {
   public TaskDto getTaskByName(String name) {
     var entity = taskRepository.findTaskByName(name);
     if (entity.isPresent()) {
+      log.info("Get task with name: {}", name);
       return taskMapper.toDtoFromEntity(entity.get());
     } else {
+      log.info("Task not found with name: {}", name);
       throw new RuntimeException(); //TODO
     }
   }
@@ -74,8 +79,10 @@ public class TaskServiceImpl implements TaskService {
     var target = taskRepository.findById(id);
     if (target.isPresent()) {
       var update = taskMapper.toEntityFromDto(taskMapper.merge(taskDto, target.get()));
+      log.info("Task update with id: {}", id);
       return taskMapper.toDtoFromEntity(taskRepository.save(update));
     } else {
+      log.info("Task not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

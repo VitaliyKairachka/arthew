@@ -30,6 +30,7 @@ public class HotelServiceImpl implements HotelService {
   @Override
   @Cacheable(value = "hotels")
   public List<HotelDto> getAllHotels() {
+    log.info("Get all hotels");
     return hotelRepository.findAll()
         .stream()
         .map(hotelMapper::toDtoFromEntity)
@@ -41,9 +42,11 @@ public class HotelServiceImpl implements HotelService {
   public HotelDto getHotelById(Long id) {
     var entity = hotelRepository.findById(id);
     if (entity.isPresent()) {
+      log.info("Get hotel with id: {}", id);
       return hotelMapper.toDtoFromEntity(entity.get());
     } else {
-      throw new RuntimeException();
+      log.info("Hotel not found with id: {}", id);
+      throw new RuntimeException(); //TODO
     }
   }
 
@@ -52,9 +55,11 @@ public class HotelServiceImpl implements HotelService {
   public HotelDto getHotelByName(String name) {
     var entity = hotelRepository.findHotelByName(name);
     if (entity.isPresent()) {
+      log.info("Get hotel with name: {}", name);
       return hotelMapper.toDtoFromEntity(entity.get());
     } else {
-      throw new RuntimeException();
+      log.info("Hotel not found with name: {}", name);
+      throw new RuntimeException(); //TODO
     }
   }
 
@@ -69,6 +74,7 @@ public class HotelServiceImpl implements HotelService {
       var place = placeRepository.findById(placeDto.getId());
       place.ifPresent(entity::setPlace);
     }
+    log.info("Create new hotel with name: {}", entity.getName());
     return hotelMapper.toDtoFromEntity(hotelRepository.save(entity));
   }
 
@@ -79,8 +85,10 @@ public class HotelServiceImpl implements HotelService {
     var target = hotelRepository.findById(id);
     if (target.isPresent()) {
       var update = hotelMapper.toEntityFromDto(hotelMapper.merge(hotelDto, target.get()));
+      log.info("Hotel update with id: {}", id);
       return hotelMapper.toDtoFromEntity(hotelRepository.save(update));
     } else {
+      log.info("Hotel not found with id: {}", id);
       throw new RuntimeException(); //TODO
     }
   }

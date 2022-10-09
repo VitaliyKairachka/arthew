@@ -35,9 +35,23 @@ public class RegionServiceImpl implements RegionService {
   }
 
   @Override
+  public RegionDto getRegionById(Long id) {
+    var entity = regionRepository.findById(id);
+    if (entity.isPresent()) {
+      return regionMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException();  //TODO
+    }
+  }
+
+  @Override
   public RegionDto getRegionByName(String name) {
     var entity = regionRepository.findRegionByName(name);
-    return regionMapper.toDtoFromEntity(entity);
+    if (entity.isPresent()) {
+      return regionMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException();  //TODO
+    }
   }
 
   @Override
@@ -68,12 +82,12 @@ public class RegionServiceImpl implements RegionService {
   @Override
   @Transactional
   public void deleteRegion(Long id) {
-      var target = regionRepository.findById(id);
-      if (target.isPresent()) {
-        regionRepository.delete(target.get());
-        log.info("Region deleted with id: {}", id);
-      } else {
-        log.info("Region not found with id: {}", id);
-      }
+    var target = regionRepository.findById(id);
+    if (target.isPresent()) {
+      regionRepository.delete(target.get());
+      log.info("Region deleted with id: {}", id);
+    } else {
+      log.info("Region not found with id: {}", id);
+    }
   }
 }

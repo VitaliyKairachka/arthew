@@ -35,9 +35,23 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
+  public TaskDto getTaskById(Long id) {
+    var entity = taskRepository.findById(id);
+    if (entity.isPresent()) {
+      return taskMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
+  }
+
+  @Override
   public TaskDto getTaskByName(String name) {
     var entity = taskRepository.findTaskByName(name);
-    return taskMapper.toDtoFromEntity(entity);
+    if (entity.isPresent()) {
+      return taskMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override

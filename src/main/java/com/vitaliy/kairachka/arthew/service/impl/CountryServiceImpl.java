@@ -32,9 +32,23 @@ class CountryServiceImpl implements CountryService {
   }
 
   @Override
+  public CountryDto getCountryById(Long id) {
+    var entity = countryRepository.findById(id);
+    if (entity.isPresent()) {
+      return countryMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
+  }
+
+  @Override
   public CountryDto getCountryByName(String name) {
     var entity = countryRepository.findCountryByName(name);
-    return countryMapper.toDtoFromEntity(entity);
+    if (entity.isPresent()) {
+      return countryMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override

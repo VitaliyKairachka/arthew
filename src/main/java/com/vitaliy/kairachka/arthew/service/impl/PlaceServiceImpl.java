@@ -34,9 +34,23 @@ public class PlaceServiceImpl implements PlaceService {
   }
 
   @Override
+  public PlaceDto getPlaceById(Long id) {
+    var entity = placeRepository.findById(id);
+    if (entity.isPresent()) {
+      return placeMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
+  }
+
+  @Override
   public PlaceDto getPlaceByName(String name) {
     var entity = placeRepository.findPlaceByName(name);
-    return placeMapper.toDtoFromEntity(entity);
+    if (entity.isPresent()) {
+      return placeMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override

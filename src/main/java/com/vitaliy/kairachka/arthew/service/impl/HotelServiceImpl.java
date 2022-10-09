@@ -34,9 +34,23 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
+  public HotelDto getHotelById(Long id) {
+    var entity = hotelRepository.findById(id);
+    if (entity.isPresent()) {
+      return hotelMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException();
+    }
+  }
+
+  @Override
   public HotelDto getHotelByName(String name) {
     var entity = hotelRepository.findHotelByName(name);
-    return hotelMapper.toDtoFromEntity(entity);
+    if (entity.isPresent()) {
+      return hotelMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException();
+    }
   }
 
   @Override

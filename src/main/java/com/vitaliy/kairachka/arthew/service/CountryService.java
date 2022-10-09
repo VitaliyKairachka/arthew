@@ -11,6 +11,8 @@ public interface CountryService {
 
   List<CountryDto> getAllCountries();
 
+  CountryDto getCountryById(Long id);
+
   CountryDto getCountryByName(String name);
 
   CountryDto createCountry(CreateCountryRequest request);

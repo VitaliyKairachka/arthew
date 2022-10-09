@@ -11,6 +11,8 @@ public interface PlaceService {
 
   List<PlaceDto> getAllPlaces();
 
+  PlaceDto getPlaceById(Long id);
+
   PlaceDto getPlaceByName(String name);
 
   PlaceDto createPlace(CreatePlaceRequest request);

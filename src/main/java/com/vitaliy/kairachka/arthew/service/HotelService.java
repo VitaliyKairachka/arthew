@@ -11,6 +11,8 @@ public interface HotelService {
 
   List<HotelDto> getAllHotels();
 
+  HotelDto getHotelById(Long id);
+
   HotelDto getHotelByName(String name);
 
   HotelDto createHotel(CreateHotelRequest request);

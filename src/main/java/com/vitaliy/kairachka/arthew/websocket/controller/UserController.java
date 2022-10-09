@@ -11,7 +11,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @author Vitaliy Kayrachka
@@ -36,13 +35,31 @@ public class UserController {
 
   @MessageMapping("/user/{id}")
   @SendTo("/topic/messages")
-  public UserDto get(@DestinationVariable Long id) {
+  public UserDto getById(@DestinationVariable Long id) {
     return userService.getUserById(id);
   }
 
+  @MessageMapping("/user/{login}")
+  @SendTo("topic/messages")
+  public UserDto getByLogin(@DestinationVariable String login) {
+    return userService.getUserByLogin(login);
+  }
+
   @MessageMapping("/user/create")
-  @SendTo("/topic/user/create")
+  @SendTo("/topic/messages")
   public UserDto create(@Payload CreateUserRequest request) {
     return userService.createUser(request);
+  }
+
+  @MessageMapping("/user/update/{id}")
+  @SendTo("/topic/messages")
+  public UserDto update(@DestinationVariable Long id, @Payload UserDto userDto) {
+    return userService.updateUser(id, userDto);
+  }
+
+  @MessageMapping("/user/delete/{id}")
+  @SendTo("/topic/messages")
+  public void delete(@DestinationVariable Long id) {
+    userService.deleteUser(id);
   }
 }

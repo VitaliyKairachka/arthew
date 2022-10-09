@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.repository;
 
 import com.vitaliy.kairachka.arthew.model.entity.Region;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -9,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface RegionRepository extends JpaRepository<Region, Long>, JpaSpecificationExecutor<Region> {
 
-  Region findRegionByName(String name);
+  Optional<Region> findRegionByName(String name);
 }

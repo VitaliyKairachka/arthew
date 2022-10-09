@@ -11,6 +11,8 @@ public interface TaskService {
 
   List<TaskDto> getAllTasks();
 
+  TaskDto getTaskById(Long id);
+
   TaskDto getTaskByName(String name);
 
   TaskDto createTask(CreateTaskRequest request);

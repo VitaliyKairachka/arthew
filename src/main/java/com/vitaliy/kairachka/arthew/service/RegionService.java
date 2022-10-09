@@ -11,6 +11,8 @@ public interface RegionService {
 
   List<RegionDto> getAllRegions();
 
+  RegionDto getRegionById(Long id);
+
   RegionDto getRegionByName(String name);
 
   RegionDto createRegion(CreateRegionRequest request);

@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Vitaliy Kayrachka
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   public Boolean login(LoginUserRequest request) {
-    var result = getUserByName(request.getLogin());
+    var result = getUserByLogin(request.getLogin());
     return result != null;
   }
 
@@ -42,32 +42,64 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   public UserDto getUserById(Long id) {
-    return userMapper.toDtoFromEntity(userRepository.findById(id).get());
+    var entity = userRepository.findById(id);
+    if (entity.isPresent()) {
+      return userMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override
-  public UserDto getUserByName(String name) {
-    return userMapper.toDtoFromEntity(userRepository.findUserByLogin(name));
+  public UserDto getUserByLogin(String login) {
+    var entity = userRepository.findUserByLogin(login);
+    if (entity.isPresent()) {
+      return userMapper.toDtoFromEntity(entity.get());
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
   @Override
+  @Transactional
   public UserDto createUser(CreateUserRequest createUserRequest) {
-    return null;
+    var userDto = userMapper.toDtoFromRequest(createUserRequest);
+    var entity = userMapper.toEntityFromDto(userDto);
+    return userMapper.toDtoFromEntity(userRepository.save(entity));
   }
 
   @Override
+  @Transactional
   public UserDto updateUser(Long id, UserDto userDto) {
-    return null;
+    var target = userRepository.findById(id);
+    if (target.isPresent()) {
+      var update = userMapper.toEntityFromDto(userMapper.merge(userDto, target.get()));
+      return userMapper.toDtoFromEntity(userRepository.save(update));
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 
 
   @Override
+  @Transactional
   public void deleteUser(Long id) {
-
+    var target = userRepository.findById(id);
+    if (target.isPresent()) {
+      userRepository.delete(target.get());
+      log.info("User deleted with id: {}", id);
+    } else {
+      log.info("User not found with id: {}", id);
+    }
   }
 
   @Override
-  public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-    return userRepository.findUserByLogin(login);
+  public UserDetails loadUserByUsername(String login) {
+    var entity = userRepository.findUserByLogin(login);
+    if (entity.isPresent()) {
+      return entity.get();
+    } else {
+      throw new RuntimeException(); //TODO
+    }
   }
 }

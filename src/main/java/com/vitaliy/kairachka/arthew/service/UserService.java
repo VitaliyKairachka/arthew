@@ -16,7 +16,7 @@ public interface UserService {
 
   UserDto getUserById(Long id);
 
-  UserDto getUserByName(String name);
+  UserDto getUserByLogin(String name);
 
   UserDto createUser(CreateUserRequest createUserRequest);
 

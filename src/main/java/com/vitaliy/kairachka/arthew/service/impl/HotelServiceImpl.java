@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class HotelServiceImpl implements HotelService {
   private final HotelMapper hotelMapper;
 
   @Override
+  @Cacheable(value = "hotels")
   public List<HotelDto> getAllHotels() {
     return hotelRepository.findAll()
         .stream()
@@ -34,6 +37,7 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
+  @Cacheable(value = "hotels")
   public HotelDto getHotelById(Long id) {
     var entity = hotelRepository.findById(id);
     if (entity.isPresent()) {
@@ -44,6 +48,7 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
+  @Cacheable(value = "hotels")
   public HotelDto getHotelByName(String name) {
     var entity = hotelRepository.findHotelByName(name);
     if (entity.isPresent()) {
@@ -55,6 +60,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "hotels", allEntries = true)
   public HotelDto createHotel(CreateHotelRequest request) {
     var hotelDto = hotelMapper.toDtoFromRequest(request);
     var entity = hotelMapper.toEntityFromDto(hotelDto);
@@ -68,6 +74,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "hotels", allEntries = true)
   public HotelDto updateHotel(Long id, HotelDto hotelDto) {
     var target = hotelRepository.findById(id);
     if (target.isPresent()) {
@@ -80,6 +87,7 @@ public class HotelServiceImpl implements HotelService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "hotels", allEntries = true)
   public void deleteHotel(Long id) {
     var target = hotelRepository.findById(id);
     if (target.isPresent()) {

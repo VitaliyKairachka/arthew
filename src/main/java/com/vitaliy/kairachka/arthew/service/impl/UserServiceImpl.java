@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
+  @Cacheable(value = "users")
   public List<UserDto> getAllUsers() {
     return userRepository.findAll()
         .stream()
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
+  @Cacheable(value = "users")
   public UserDto getUserById(Long id) {
     var entity = userRepository.findById(id);
     if (entity.isPresent()) {
@@ -51,6 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
+  @Cacheable(value = "users")
   public UserDto getUserByLogin(String login) {
     var entity = userRepository.findUserByLogin(login);
     if (entity.isPresent()) {
@@ -62,6 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "users", allEntries = true)
   public UserDto createUser(CreateUserRequest createUserRequest) {
     var userDto = userMapper.toDtoFromRequest(createUserRequest);
     var entity = userMapper.toEntityFromDto(userDto);
@@ -70,6 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "users", allEntries = true)
   public UserDto updateUser(Long id, UserDto userDto) {
     var target = userRepository.findById(id);
     if (target.isPresent()) {
@@ -83,6 +90,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "users", allEntries = true)
   public void deleteUser(Long id) {
     var target = userRepository.findById(id);
     if (target.isPresent()) {

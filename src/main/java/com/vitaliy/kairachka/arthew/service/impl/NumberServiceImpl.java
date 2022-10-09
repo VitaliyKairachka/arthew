@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class NumberServiceImpl implements NumberService {
   private final NumberMapper numberMapper;
 
   @Override
+  @Cacheable(value = "numbers")
   public List<NumberDto> getAllNumbers() {
     return numberRepository.findAll()
         .stream()
@@ -34,6 +37,7 @@ public class NumberServiceImpl implements NumberService {
   }
 
   @Override
+  @Cacheable(value = "numbers")
   public NumberDto getNumberById(Long id) {
     var entity = numberRepository.findById(id);
     if (entity.isPresent()) {
@@ -45,6 +49,7 @@ public class NumberServiceImpl implements NumberService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "numbers", allEntries = true)
   public NumberDto createNumber(CreateNumberRequest request) {
     var numberDto = numberMapper.toDtoFromRequest(request);
     var entity = numberMapper.toEntityFromDto(numberDto);
@@ -58,6 +63,7 @@ public class NumberServiceImpl implements NumberService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "numbers", allEntries = true)
   public NumberDto updateNumber(Long id, NumberDto numberDto) {
     var target = numberRepository.findById(id);
     if (target.isPresent()) {
@@ -70,6 +76,7 @@ public class NumberServiceImpl implements NumberService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "numbers", allEntries = true)
   public void deleteNumber(Long id) {
     var target = numberRepository.findById(id);
     if (target.isPresent()) {

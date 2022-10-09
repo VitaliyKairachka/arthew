@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
 
 
   @Override
+  @Cacheable(value = "tasks")
   public List<TaskDto> getAllTasks() {
     return taskRepository.findAll()
         .stream()
@@ -35,6 +38,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
+  @Cacheable(value = "tasks")
   public TaskDto getTaskById(Long id) {
     var entity = taskRepository.findById(id);
     if (entity.isPresent()) {
@@ -45,6 +49,7 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
+  @Cacheable(value = "tasks")
   public TaskDto getTaskByName(String name) {
     var entity = taskRepository.findTaskByName(name);
     if (entity.isPresent()) {
@@ -56,6 +61,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "tasks", allEntries = true)
   public TaskDto createTask(CreateTaskRequest request) {
     //TODO
     return null;
@@ -63,6 +69,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "tasks", allEntries = true)
   public TaskDto updateTask(Long id, TaskDto taskDto) {
     var target = taskRepository.findById(id);
     if (target.isPresent()) {
@@ -75,6 +82,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "tasks", allEntries = true)
   public void deleteTask(Long id) {
     var target = taskRepository.findById(id);
     if (target.isPresent()) {

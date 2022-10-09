@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class RegionServiceImpl implements RegionService {
 
 
   @Override
+  @Cacheable(value = "regions")
   public List<RegionDto> getAllRegions() {
     return regionRepository.findAll()
         .stream()
@@ -35,6 +38,7 @@ public class RegionServiceImpl implements RegionService {
   }
 
   @Override
+  @Cacheable(value = "regions")
   public RegionDto getRegionById(Long id) {
     var entity = regionRepository.findById(id);
     if (entity.isPresent()) {
@@ -45,6 +49,7 @@ public class RegionServiceImpl implements RegionService {
   }
 
   @Override
+  @Cacheable(value = "regions")
   public RegionDto getRegionByName(String name) {
     var entity = regionRepository.findRegionByName(name);
     if (entity.isPresent()) {
@@ -56,6 +61,7 @@ public class RegionServiceImpl implements RegionService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "regions", allEntries = true)
   public RegionDto createRegion(CreateRegionRequest request) {
     var regionDto = regionMapper.toDtoFromRequest(request);
     var entity = regionMapper.toEntityFromDto(regionDto);
@@ -69,6 +75,7 @@ public class RegionServiceImpl implements RegionService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "regions", allEntries = true)
   public RegionDto updateRegion(Long id, RegionDto regionDto) {
     var target = regionRepository.findById(id);
     if (target.isPresent()) {
@@ -81,6 +88,7 @@ public class RegionServiceImpl implements RegionService {
 
   @Override
   @Transactional
+  @CacheEvict(value = "regions", allEntries = true)
   public void deleteRegion(Long id) {
     var target = regionRepository.findById(id);
     if (target.isPresent()) {

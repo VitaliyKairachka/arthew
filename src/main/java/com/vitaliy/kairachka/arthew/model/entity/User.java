@@ -1,8 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
 import com.vitaliy.kairachka.arthew.model.enums.Role;
-import java.util.Collection;
-import java.util.Collections;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,9 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author Vitaliy Kayrachka
@@ -30,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Accessors(chain = true)
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
 
   @Id
   @Column(name = "id")
@@ -49,35 +44,4 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   private Role role;
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
-    return Collections.singleton(authority);
-  }
-
-  @Override
-  public String getUsername() {
-    return login;
-  }
-
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
 }

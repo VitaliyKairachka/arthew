@@ -3,6 +3,7 @@ package com.vitaliy.kairachka.arthew.service;
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.ResponseUserLogin;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-  Boolean login(LoginUserRequest request);
+  ResponseUserLogin login(LoginUserRequest request);
 
   List<UserDto> getAllUsers();
 

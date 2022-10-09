@@ -1,8 +1,11 @@
 package com.vitaliy.kairachka.arthew.service.impl;
 
+import static com.vitaliy.kairachka.arthew.utils.PasswordEncryption.checkPassword;
+
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.ResponseUserLogin;
 import com.vitaliy.kairachka.arthew.model.mapper.UserMapper;
 import com.vitaliy.kairachka.arthew.repository.UserRepository;
 import com.vitaliy.kairachka.arthew.service.UserService;
@@ -12,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +24,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
 
   @Override
-  public Boolean login(LoginUserRequest request) {
+  public ResponseUserLogin login(LoginUserRequest request) {
     var result = getUserByLogin(request.getLogin());
-    return result != null;
+    return new ResponseUserLogin()
+        .setIsSuccess(checkPassword(request.getPassword(), result.getPassword()))
+        .setId(result.getId())
+        .setLogin(result.getLogin())
+        .setRole(result.getRole());
   }
 
   @Override
@@ -98,16 +103,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
       log.info("User deleted with id: {}", id);
     } else {
       log.info("User not found with id: {}", id);
-    }
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String login) {
-    var entity = userRepository.findUserByLogin(login);
-    if (entity.isPresent()) {
-      return entity.get();
-    } else {
-      throw new RuntimeException(); //TODO
     }
   }
 }

@@ -8,6 +8,7 @@ import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.service.CountryService;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -57,7 +58,7 @@ class CountryServiceImpl implements CountryService {
       return countryMapper.toDtoFromEntity(entity.get());
     } else {
       log.info("Country not found with name: {}", name);
-      throw new RuntimeException(); //TODO
+      throw new EntityNotFoundException(); //TODO
     }
   }
 

@@ -42,6 +42,6 @@ public class Place {
     @JoinColumn(name = "id")
     private Region region;
 
-    @OneToMany(mappedBy = "photos")
+    @OneToMany(mappedBy = "place")
     private Set<Photo> photoSet;
 }

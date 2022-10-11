@@ -41,6 +41,6 @@ public class Number {
     @JoinColumn(name = "id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "photos")
+    @OneToMany(mappedBy = "number")
     private Set<Photo> photoSet;
 }

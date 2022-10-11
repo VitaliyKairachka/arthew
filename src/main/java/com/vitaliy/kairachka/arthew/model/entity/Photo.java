@@ -37,15 +37,15 @@ public class Photo {
     @Column(name = "file")
     private String file;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Place.class)
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Hotel.class)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Number.class)
     @JoinColumn(name = "number_id")
     private Number number;
 }

@@ -42,6 +42,6 @@ public class Hotel {
     @OneToOne(fetch = FetchType.LAZY)
     private Place place;
 
-    @OneToMany(mappedBy = "photos")
+    @OneToMany(mappedBy = "hotel")
     private Set<Photo> photoSet;
 }

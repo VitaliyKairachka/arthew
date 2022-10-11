@@ -28,31 +28,31 @@ public class RegionController {
         return regionService.getAllRegions(pageable);
     }
 
-    @MessageMapping("/country/{id}")
+    @MessageMapping("/region/{id}")
     @SendTo("/topic/messages")
     public RegionDto getById(@DestinationVariable Long id) {
         return regionService.getRegionById(id);
     }
 
-    @MessageMapping("/country/{name}")
+    @MessageMapping("/region/{name}")
     @SendTo("/topic/messages")
     public RegionDto getByName(@DestinationVariable String name) {
         return regionService.getRegionByName(name);
     }
 
-    @MessageMapping("/country/create")
+    @MessageMapping("/region/create")
     @SendTo("/topic/messages")
     public RegionDto create(@Payload CreateRegionRequest request) {
         return regionService.createRegion(request);
     }
 
-    @MessageMapping("/country/update/{id}")
+    @MessageMapping("/region/update/{id}")
     @SendTo("/topic/messages")
     public RegionDto update(@DestinationVariable Long id, @Payload RegionDto regionDto) {
         return regionService.updateRegion(id, regionDto);
     }
 
-    @MessageMapping("/country/delete/{id}")
+    @MessageMapping("/region/delete/{id}")
     @SendTo("/topic/messages")
     public void delete(@DestinationVariable Long id) {
         regionService.deleteRegion(id);

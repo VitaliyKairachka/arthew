@@ -66,19 +66,19 @@ public class PlaceController {
         placeService.deletePlace(id);
     }
 
-    @MessageMapping("/hotel/photo")
+    @MessageMapping("/place/photo")
     @SendTo("/topic/messages")
     public Page<Photo> getAllPhoto(@Payload Pageable pageable) {
         return photoService.getAllPhotos(pageable);
     }
 
-    @MessageMapping("/hotel/photo/create")
+    @MessageMapping("/place/photo/create")
     @SendTo("/topic/messages")
     public List<PhotoDto> createPhoto(@Payload List<CreatePhotoRequest> requests) {
         return photoService.createPhoto(requests);
     }
 
-    @MessageMapping("/hotel/photo/delete/{id}")
+    @MessageMapping("/place/photo/delete/{id}")
     @SendTo("/topic/messages")
     public void deletePhoto(@DestinationVariable UUID id) {
         photoService.deletePhoto(id);

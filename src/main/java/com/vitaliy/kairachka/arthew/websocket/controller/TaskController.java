@@ -52,7 +52,7 @@ public class TaskController {
         return taskService.updateTask(id, taskDto);
     }
 
-    @MessageMapping("/task/update/{id}")
+    @MessageMapping("/task/delete/{id}")
     @SendTo("/topic/messages")
     public void delete(@DestinationVariable Long id) {
         taskService.deleteTask(id);

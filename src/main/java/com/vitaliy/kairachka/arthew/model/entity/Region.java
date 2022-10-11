@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
@@ -37,7 +38,10 @@ public class Region {
     @Column(name = "hotel_count")
     private Long hotelCount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @ManyToOne(targetEntity = Country.class)
+    @JoinColumn(name = "country_id")
     private Country country;
+
+    @OneToMany(mappedBy = "region")
+    private List<Place> places;
 }

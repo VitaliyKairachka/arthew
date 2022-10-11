@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,9 +39,12 @@ public class Place {
     @Column(name = "photo_count")
     private Long photoCount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @ManyToOne(targetEntity = Region.class)
+    @JoinColumn(name = "region_id")
     private Region region;
+
+    @OneToMany(mappedBy = "place")
+    private List<Hotel> hotels;
 
     @OneToMany(mappedBy = "place")
     private Set<Photo> photoSet;

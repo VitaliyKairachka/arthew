@@ -38,8 +38,8 @@ public class Hotel {
     @Column(name = "photo_count")
     private Long photoCount;
 
-    @JoinColumn(name = "id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Place.class)
+    @JoinColumn(name = "place_id")
     private Place place;
 
     @OneToMany(mappedBy = "hotel")

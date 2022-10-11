@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
@@ -40,4 +41,7 @@ public class Country {
     @ColumnDefault("0")
     @Column(name = "hotel_count")
     private Long hotelCounter;
+
+    @OneToMany(mappedBy = "country")
+    private List<Region> regions;
 }

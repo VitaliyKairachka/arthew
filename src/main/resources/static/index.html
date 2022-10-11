@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hello WebSocket</title>
-  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/main.css" rel="stylesheet">
-  <script src="/webjars/jquery/jquery.min.js"></script>
-  <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-  <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-  <script src="/js/app.js"></script>
+    <title>Hello WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/country.js"></script>
+    <script src="/js/region.js"></script>
 </head>
 <body>
-<div id="main-content" class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <form class="form-inline">
+<div id="main-content" class="container pt-3">
+    <form id="login-form">
         <div class="form-group">
-          <label for="connect">WebSocket connection:</label>
-          <button id="connect" class="btn btn-default" type="submit">Connect</button>
-          <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-          </button>
+            <label for="inputLogin">Login</label>
+            <input type="text" class="form-control" id="inputLogin" aria-describedby="login" placeholder="Enter login">
         </div>
-      </form>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        </div>
+        <button id="buttonLogin" type="submit" class="btn btn-primary mt-2">Submit</button>
+    </form>
+
+    <button id="buttonLogout" class="btn btn-primary mt-2 ml-auto">Logout</button>
+
+    <div id="buttons" class="row mt-3">
+        <div class="col-md-12">
+            <form class="form-inline">
+                <button id="getCountryButton" class="btn btn-secondary" type="submit">Country</button>
+                <button id="getRegionButton" class="btn btn-default" type="submit">Region</button>
+                <button id="getPlaceButton" class="btn btn-secondary" type="submit">Place</button>
+                <button id="getHotelButton" class="btn btn-default" type="submit">Hotel</button>
+                <button id="getNumberButton" class="btn btn-secondary" type="submit">Number</button>
+                <button id="getUsersButton" class="btn btn-default" type="submit">Users</button>
+                <button id="getTasksButton" class="btn btn-secondary" type="submit">Tasks</button>
+            </form>
+        </div>
     </div>
-    <div class="col-md-6">
-      <form class="form-inline">
-        <button id="send" class="btn btn-default" type="submit">Users</button>
-      </form>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <tbody id="messages">
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <table id="conversation" class="table table-striped">
-        <thead>
-        <tr>
-          <th>Messages</th>
-        </tr>
-        </thead>
-        <tbody id="messages">
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
 </body>
 </html>

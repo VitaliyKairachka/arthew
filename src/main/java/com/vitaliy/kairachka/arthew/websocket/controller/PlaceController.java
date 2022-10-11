@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.PhotoDto;
 import com.vitaliy.kairachka.arthew.model.dto.PlaceDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.PageableRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePhotoRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePlaceRequest;
 import com.vitaliy.kairachka.arthew.model.entity.Photo;
@@ -10,6 +11,7 @@ import com.vitaliy.kairachka.arthew.service.PhotoService;
 import com.vitaliy.kairachka.arthew.service.PlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -32,7 +34,8 @@ public class PlaceController {
 
     @MessageMapping("/place")
     @SendTo("/topic/messages")
-    public Page<Place> getAll(@Payload Pageable pageable) {
+    public List<Place> getAll(@Payload PageableRequest page) {
+        Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return placeService.getAllPlaces(pageable);
     }
 
@@ -68,7 +71,8 @@ public class PlaceController {
 
     @MessageMapping("/place/photo")
     @SendTo("/topic/messages")
-    public Page<Photo> getAllPhoto(@Payload Pageable pageable) {
+    public List<Photo> getAllPhoto(@Payload PageableRequest page) {
+        Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return photoService.getAllPhotos(pageable);
     }
 

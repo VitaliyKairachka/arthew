@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class Country {
     @Column(name = "hotel_count")
     private Long hotelCounter;
 
-    @OneToMany(mappedBy = "country")
+    @JsonIgnore
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<Region> regions;
 }

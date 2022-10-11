@@ -1,6 +1,7 @@
 package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.PageableRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.login.LoginUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.response.login.ResponseUserLogin;
@@ -8,12 +9,15 @@ import com.vitaliy.kairachka.arthew.model.entity.User;
 import com.vitaliy.kairachka.arthew.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
@@ -32,7 +36,8 @@ public class UserController {
 
     @MessageMapping("/user")
     @SendTo("/topic/messages")
-    public Page<User> getAll(@Payload Pageable pageable) {
+    public List<User> getAll(@Payload PageableRequest page) {
+        Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return userService.getAllUsers(pageable);
     }
 

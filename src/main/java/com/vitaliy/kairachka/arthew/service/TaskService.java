@@ -6,12 +6,14 @@ import com.vitaliy.kairachka.arthew.model.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
 public interface TaskService {
 
-    Page<Task> getAllTasks(Pageable pageable);
+    List<Task> getAllTasks(Pageable pageable);
 
     TaskDto getTaskById(Long id);
 

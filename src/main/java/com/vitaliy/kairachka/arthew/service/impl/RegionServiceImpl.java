@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -31,9 +33,9 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Cacheable(value = "regions")
-    public Page<Region> getAllRegions(Pageable pageable) {
+    public List<Region> getAllRegions(Pageable pageable) {
         log.info("Get all regions");
-        return regionRepository.findAll(pageable);
+        return regionRepository.findAll(pageable).toList();
     }
 
     @Override

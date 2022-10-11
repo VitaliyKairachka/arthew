@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -30,9 +32,9 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Cacheable(value = "numbers")
-    public Page<Number> getAllNumbers(Pageable pageable) {
+    public List<Number> getAllNumbers(Pageable pageable) {
         log.info("Get all numbers");
-        return numberRepository.findAll(pageable);
+        return numberRepository.findAll(pageable).toList();
     }
 
     @Override
@@ -54,10 +56,14 @@ public class NumberServiceImpl implements NumberService {
     public NumberDto createNumber(CreateNumberRequest request) {
         var numberDto = numberMapper.toDtoFromRequest(request);
         var entity = numberMapper.toEntityFromDto(numberDto);
-        var hotelDto = numberDto.getHotel();
-        if (hotelDto != null) {
-            var hotel = hotelRepository.findById(hotelDto.getId());
-            hotel.ifPresent(entity::setHotel);
+        var hotelEntity = numberDto.getHotel();
+        if (hotelEntity != null) {
+            var hotel = hotelRepository.findById(hotelEntity.getId());
+            hotel.ifPresent(value -> {
+                entity.setHotel(value);
+                var tmp = value.setNumberCount(hotel.get().getNumberCount() + 1);
+                hotelRepository.save(tmp);
+            });
         }
         log.info("Create new number");
         return numberMapper.toDtoFromEntity(numberRepository.save(entity));
@@ -84,6 +90,11 @@ public class NumberServiceImpl implements NumberService {
     public void deleteNumber(Long id) {
         var target = numberRepository.findById(id);
         if (target.isPresent()) {
+            var hotel = hotelRepository.findById(target.get().getHotel().getId());
+            hotel.ifPresent(value -> {
+                var tmp = value.setNumberCount(value.getNumberCount() - 1);
+                hotelRepository.save(tmp);
+            });
             numberRepository.delete(target.get());
             log.info("Number deleted with id: {}", id);
         } else {

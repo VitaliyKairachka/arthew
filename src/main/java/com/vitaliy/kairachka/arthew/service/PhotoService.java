@@ -13,7 +13,7 @@ import java.util.UUID;
  * @author Vitaliy Kayrachka
  */
 public interface PhotoService {
-    Page<Photo> getAllPhotos(Pageable pageable);
+    List<Photo> getAllPhotos(Pageable pageable);
 
     List<PhotoDto> createPhoto(List<CreatePhotoRequest> requestList);
 

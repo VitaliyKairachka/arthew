@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -30,9 +32,9 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Cacheable(value = "places")
-    public Page<Place> getAllPlaces(Pageable pageable) {
+    public List<Place> getAllPlaces(Pageable pageable) {
         log.info("Get all places");
-        return placeRepository.findAll(pageable);
+        return placeRepository.findAll(pageable).toList();
     }
 
     @Override

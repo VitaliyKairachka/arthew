@@ -1,17 +1,21 @@
 package com.vitaliy.kairachka.arthew.websocket.controller;
 
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
+import com.vitaliy.kairachka.arthew.model.dto.requests.PageableRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
 import com.vitaliy.kairachka.arthew.model.entity.Task;
 import com.vitaliy.kairachka.arthew.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
@@ -24,7 +28,8 @@ public class TaskController {
 
     @MessageMapping("/task")
     @SendTo("/topic/messages")
-    public Page<Task> getAll(@Payload Pageable pageable) {
+    public List<Task> getAll(@Payload PageableRequest page) {
+        Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return taskService.getAllTasks(pageable);
     }
 

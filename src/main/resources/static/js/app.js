@@ -1,70 +1,92 @@
-let stompClient = null;
-
-function setConnected(connected) {
-  $("#connect").prop("disabled", connected);
-  $("#disconnect").prop("disabled", !connected);
-  if (connected) {
-    $("#conversation").show();
-  }
-  else {
-    $("#conversation").hide();
-  }
-  $("#messages").html("");
-}
-
-function connect() {
-  const socket = new SockJS('/websocket');
-  stompClient = Stomp.over(socket);
-  stompClient.connect({}, function (frame) {
-    setConnected(true);
-    console.log('Connected to: ' + frame);
-    stompClient.subscribe('/topic/messages', function (message) {
-      console.log('received: ' + message.body);
-      const data = JSON.parse(message.body);
-      if (Array.isArray(data)) {
-        data.forEach(item => {
-          showMessage(item);
-        })
-      } else {
-        showMessage(data);
-      }
-    });
-  });
-}
-
-function disconnect() {
-  if (stompClient !== null) {
-    stompClient.disconnect();
-  }
-  setConnected(false);
-  console.log("Disconnected");
-}
-
-function sendName() {
-  stompClient.send("/app/hello", {}, $("#name").val());
-}
-
-function showMessage(item) {
-  const node = $(`
-    <tr data-id="${item.id}">
-      <td>${item.login}</td>
-      <td>${item.fio}</td>
-      <td>${item.role}</td>
-     </tr>
-  `)
-  node.on("click", function (e) {
-    e.preventDefault();
-    const id = e.currentTarget.dataset.id
-    stompClient.send(`/app/hello/${id}`, {}, $("#name").val());
-  })
-  $("#messages").append(node);
-}
-
-$(function () {
-  $("form").on('submit', function (e) {
-    e.preventDefault();
-  });
-  $( "#connect" ).click(function() { connect(); });
-  $( "#disconnect" ).click(function() { disconnect(); });
-  $( "#send" ).click(function() { sendName(); });
+window.addEventListener("load", function (event) {
+    init();
 });
+
+function init() {
+    const user = getLocalUser();
+    const isLoggedIn = user != null;
+    onChangeLoggedInStatus(isLoggedIn, user?.role);
+
+    const wsClient = getWSClient();
+    wsClient.connect({}, function () {
+        wsClient.subscribe('/topic/user/login', handleLoginTopic);
+    });
+
+    window.wsClient = wsClient
+
+    $("#buttonLogin").on("click", onClickLogin)
+    $("#buttonLogout").on("click", onClickLogout)
+}
+
+function getLocalUser() {
+    const userJSON = localStorage.getItem("user");
+    if (userJSON == null) {
+        return null;
+    }
+    return JSON.parse(userJSON);
+}
+
+function saveLocalUser(user) {
+    if (user == null) {
+        localStorage.setItem("user", null);
+    } else {
+        localStorage.setItem("user", JSON.stringify(user));
+    }
+}
+
+function getWSClient() {
+    const socket = new SockJS('/websocket');
+    return Stomp.over(socket);
+}
+
+function onChangeLoggedInStatus(isLoggedIn, role = null) {
+    if (isLoggedIn) {
+        $("#buttonLogout").css("display", "block")
+        $("#login-form").css("display", "none");
+        $('#buttons').css("display", "block");
+
+        $('#inputLogin').val("");
+        $('#inputPassword').val("");
+    } else {
+        $("#login-form").css("display", "block");
+        $("#buttonLogout").css("display", "none");
+        $('#buttons').css("display", "none");
+
+        if (window.clearCountries != null) {
+            window.clearCountries()
+        }
+    }
+
+    const $adminButtons = $('#getUsersButton, #getTasksButton');
+
+    if (role === 'ADMIN') {
+        $adminButtons.css("display", "block")
+    } else {
+        $adminButtons.css("display", "none")
+    }
+}
+
+function handleLoginTopic(message) {
+    const user = JSON.parse(message.body);
+    if (user.isSuccess) {
+        saveLocalUser(user);
+        onChangeLoggedInStatus(true, user?.role);
+    } else {
+        alert("Incorrect password or login")
+    }
+}
+
+function onClickLogin() {
+    const login = $('#inputLogin').val();
+    const password = $('#inputPassword').val();
+    wsClient.send(
+        "/app/user/login",
+        {},
+        JSON.stringify({login, password}),
+    );
+}
+
+function onClickLogout() {
+    saveLocalUser(null);
+    onChangeLoggedInStatus(false);
+}

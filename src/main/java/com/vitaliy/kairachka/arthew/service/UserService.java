@@ -8,6 +8,8 @@ import com.vitaliy.kairachka.arthew.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -15,7 +17,7 @@ public interface UserService {
 
     ResponseUserLogin login(LoginUserRequest request);
 
-    Page<User> getAllUsers(Pageable pageable);
+    List<User> getAllUsers(Pageable pageable);
 
     UserDto getUserById(Long id);
 

@@ -32,9 +32,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     @Cacheable(value = "photos")
-    public Page<Photo> getAllPhotos(Pageable pageable) {
+    public List<Photo> getAllPhotos(Pageable pageable) {
         log.info("Get all photos");
-        return photoRepository.findAll(pageable);
+        return photoRepository.findAll(pageable).toList();
     }
 
     @Override

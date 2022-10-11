@@ -17,7 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.vitaliy.kairachka.arthew.utils.PasswordEncryption.checkPassword;
+import static com.vitaliy.kairachka.arthew.utils.PasswordEncryption.hashedPassword;
 
 /**
  * @author Vitaliy Kayrachka
@@ -42,9 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Cacheable(value = "users")
-    public Page<User> getAllUsers(Pageable pageable) {
+    public List<User> getAllUsers(Pageable pageable) {
         log.info("Get all users");
-        return userRepository.findAll(pageable);
+        return userRepository.findAll(pageable).toList();
     }
 
     @Override

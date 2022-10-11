@@ -1,16 +1,14 @@
 package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
-import com.vitaliy.kairachka.arthew.model.dto.PhotoDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
-import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePhotoRequest;
 import com.vitaliy.kairachka.arthew.model.entity.Hotel;
-import com.vitaliy.kairachka.arthew.model.entity.Photo;
 import com.vitaliy.kairachka.arthew.model.mapper.HotelMapper;
+import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.repository.HotelRepository;
 import com.vitaliy.kairachka.arthew.repository.PlaceRepository;
+import com.vitaliy.kairachka.arthew.repository.RegionRepository;
 import com.vitaliy.kairachka.arthew.service.HotelService;
-import com.vitaliy.kairachka.arthew.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,13 +30,15 @@ public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
     private final PlaceRepository placeRepository;
+    private final RegionRepository regionRepository;
+    private final CountryRepository countryRepository;
     private final HotelMapper hotelMapper;
 
     @Override
     @Cacheable(value = "hotels")
-    public Page<Hotel> getAllHotels(Pageable pageable) {
+    public List<Hotel> getAllHotels(Pageable pageable) {
         log.info("Get all hotels");
-        return hotelRepository.findAll(pageable);
+        return hotelRepository.findAll(pageable).toList();
     }
 
     @Override
@@ -76,7 +76,21 @@ public class HotelServiceImpl implements HotelService {
         var placeDto = hotelDto.getPlace();
         if (placeDto != null) {
             var place = placeRepository.findById(placeDto.getId());
-            place.ifPresent(entity::setPlace);
+            place.ifPresent(placePresent -> {
+                entity.setPlace(placePresent);
+                var placeTmp = placePresent.setHotelCount(place.get().getHotelCount() + 1);
+                placeRepository.save(placeTmp);
+                var region = regionRepository.findById(placeTmp.getRegion().getId());
+                region.ifPresent(regionPresent -> {
+                    var regionTmp = regionPresent.setHotelCount(regionPresent.getHotelCount() + 1);
+                    regionRepository.save(regionTmp);
+                    var country = countryRepository.findById(regionTmp.getCountry().getId());
+                    country.ifPresent(countryPresent -> {
+                        var countryTmp = countryPresent.setHotelCounter(country.get().getHotelCounter() + 1);
+                        countryRepository.save(countryTmp);
+                    });
+                });
+            });
         }
         log.info("Create new hotel with name: {}", entity.getName());
         return hotelMapper.toDtoFromEntity(hotelRepository.save(entity));

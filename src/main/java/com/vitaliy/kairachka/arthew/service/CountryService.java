@@ -6,12 +6,14 @@ import com.vitaliy.kairachka.arthew.model.entity.Country;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
 public interface CountryService {
 
-    Page<Country> getAllCountries(Pageable pageable);
+    List<Country> getAllCountries(Pageable pageable);
 
     CountryDto getCountryById(Long id);
 

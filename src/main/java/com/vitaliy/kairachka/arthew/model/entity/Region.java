@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class Region {
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @OneToMany(mappedBy = "region")
+    @JsonIgnore
+    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
     private List<Place> places;
 }

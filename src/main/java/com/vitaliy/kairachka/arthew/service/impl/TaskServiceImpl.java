@@ -19,6 +19,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -35,9 +37,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Cacheable(value = "tasks")
-    public Page<Task> getAllTasks(Pageable pageable) {
+    public List<Task> getAllTasks(Pageable pageable) {
         log.info("Get all tasks");
-        return taskRepository.findAll(pageable);
+        return taskRepository.findAll(pageable).toList();
     }
 
     @Override

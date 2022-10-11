@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
@@ -30,9 +31,9 @@ class CountryServiceImpl implements CountryService {
 
     @Override
     @Cacheable(value = "countries")
-    public Page<Country> getAllCountries(Pageable pageable) {
+    public List<Country> getAllCountries(Pageable pageable) {
         log.info("Get all countries");
-        return countryRepository.findAll(pageable);
+        return countryRepository.findAll(pageable).toList();
     }
 
     @Override

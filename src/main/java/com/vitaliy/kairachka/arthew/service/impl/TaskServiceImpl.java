@@ -9,10 +9,13 @@ import com.vitaliy.kairachka.arthew.repository.UserRepository;
 import com.vitaliy.kairachka.arthew.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private SimpMessagingTemplate messagingTemplate;
     private final TaskMapper taskMapper;
 
 
@@ -66,8 +70,36 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @CacheEvict(value = "tasks", allEntries = true)
     public TaskDto createTask(CreateTaskRequest request) {
-        //TODO
-        return null;
+        var taskDto = taskMapper.toDtoFromRequest(request);
+        var entity = taskMapper.toEntityFromDto(taskDto);
+        var savedEntity = taskRepository.save(entity);
+        sendNotification(savedEntity);
+        log.info("Create new task with name: {}", savedEntity.getName());
+        return taskMapper.toDtoFromEntity(savedEntity);
+    }
+
+    private void sendNotification(Task task) {
+        try {
+            SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            Scheduler scheduler = schedulerFactory.getScheduler();
+            scheduler.start();
+            JobDetail job = JobBuilder
+                    .newJob(((Job) context -> notification(task)).getClass())
+                    .withIdentity("notification")
+                    .build();
+            Trigger trigger = TriggerBuilder
+                    .newTrigger()
+                    .withIdentity("notification")
+                    .withSchedule(CronScheduleBuilder.cronSchedule(task.getNotification()))
+                    .build();
+            scheduler.scheduleJob(job, trigger);
+        } catch (SchedulerException exception) {
+            exception.printStackTrace(); //TODO
+        }
+    }
+
+    public void notification(Task task) {
+        messagingTemplate.convertAndSend("/topic/message/notification", task);
     }
 
     @Override

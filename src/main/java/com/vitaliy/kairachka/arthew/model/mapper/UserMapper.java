@@ -13,30 +13,30 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "login", target = "login")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "fio", target = "fio")
-  @Mapping(source = "role", target = "role")
-  User toEntityFromDto(UserDto dto);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "login", target = "login")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "fio", target = "fio")
+    @Mapping(source = "role", target = "role")
+    User toEntityFromDto(UserDto dto);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "login", target = "login")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "fio", target = "fio")
-  @Mapping(source = "role", target = "role")
-  UserDto toDtoFromEntity(User entity);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "login", target = "login")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "fio", target = "fio")
+    @Mapping(source = "role", target = "role")
+    UserDto toDtoFromEntity(User entity);
 
-  @Mapping(source = "login", target = "login")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "fio", target = "fio")
-  @Mapping(source = "role", target = "role")
-  UserDto toDtoFromRequest(CreateUserRequest request);
+    @Mapping(source = "login", target = "login")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "fio", target = "fio")
+    @Mapping(source = "role", target = "role")
+    UserDto toDtoFromRequest(CreateUserRequest request);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "login", target = "login")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "fio", target = "fio")
-  @Mapping(source = "role", target = "role")
-  UserDto merge(@MappingTarget UserDto source, User user);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "login", target = "login")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "fio", target = "fio")
+    @Mapping(source = "role", target = "role")
+    UserDto merge(@MappingTarget UserDto source, User user);
 }

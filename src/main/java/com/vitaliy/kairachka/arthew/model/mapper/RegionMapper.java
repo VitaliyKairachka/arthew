@@ -13,28 +13,28 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface RegionMapper {
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "placeCount", target = "placeCount")
-  @Mapping(source = "hotelCount", target = "hotelCount")
-  @Mapping(source = "country", target = "country")
-  Region toEntityFromDto(RegionDto dto);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "placeCount", target = "placeCount")
+    @Mapping(source = "hotelCount", target = "hotelCount")
+    @Mapping(source = "country", target = "country")
+    Region toEntityFromDto(RegionDto dto);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "placeCount", target = "placeCount")
-  @Mapping(source = "hotelCount", target = "hotelCount")
-  @Mapping(source = "country", target = "country")
-  RegionDto toDtoFromEntity(Region region);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "placeCount", target = "placeCount")
+    @Mapping(source = "hotelCount", target = "hotelCount")
+    @Mapping(source = "country", target = "country")
+    RegionDto toDtoFromEntity(Region region);
 
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "country", target = "country")
-  RegionDto toDtoFromRequest(CreateRegionRequest request);
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "country", target = "country")
+    RegionDto toDtoFromRequest(CreateRegionRequest request);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "placeCount", target = "placeCount")
-  @Mapping(source = "hotelCount", target = "hotelCount")
-  @Mapping(source = "country", target = "country")
-  RegionDto merge(@MappingTarget RegionDto source, Region target);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "placeCount", target = "placeCount")
+    @Mapping(source = "hotelCount", target = "hotelCount")
+    @Mapping(source = "country", target = "country")
+    RegionDto merge(@MappingTarget RegionDto source, Region target);
 }

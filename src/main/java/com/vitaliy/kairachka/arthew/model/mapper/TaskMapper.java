@@ -13,30 +13,30 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "notification", target = "notification")
-  @Mapping(source = "user", target = "user")
-  Task toEntityFromDto(TaskDto dto);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "notification", target = "notification")
+    @Mapping(source = "user", target = "user")
+    Task toEntityFromDto(TaskDto dto);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "notification", target = "notification")
-  @Mapping(source = "user", target = "user")
-  TaskDto toDtoFromEntity(Task entity);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "notification", target = "notification")
+    @Mapping(source = "user", target = "user")
+    TaskDto toDtoFromEntity(Task entity);
 
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "notification", target = "notification")
-  @Mapping(source = "user", target = "user")
-  TaskDto toDtoFromRequest(CreateTaskRequest request);
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "notification", target = "notification")
+    @Mapping(source = "user", target = "user")
+    TaskDto toDtoFromRequest(CreateTaskRequest request);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "notification", target = "notification")
-  @Mapping(source = "user", target = "user")
-  TaskDto merge(@MappingTarget TaskDto source,  Task target);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "notification", target = "notification")
+    @Mapping(source = "user", target = "user")
+    TaskDto merge(@MappingTarget TaskDto source, Task target);
 }

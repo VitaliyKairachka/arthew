@@ -11,15 +11,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface PlaceService {
 
-  Page<Place> getAllPlaces(Pageable pageable);
+    Page<Place> getAllPlaces(Pageable pageable);
 
-  PlaceDto getPlaceById(Long id);
+    PlaceDto getPlaceById(Long id);
 
-  PlaceDto getPlaceByName(String name);
+    PlaceDto getPlaceByName(String name);
 
-  PlaceDto createPlace(CreatePlaceRequest request);
+    PlaceDto createPlace(CreatePlaceRequest request);
 
-  PlaceDto updatePlace(Long id, PlaceDto placeDto);
+    PlaceDto updatePlace(Long id, PlaceDto placeDto);
 
-  void deletePlace(Long id);
+    void deletePlace(Long id);
 }

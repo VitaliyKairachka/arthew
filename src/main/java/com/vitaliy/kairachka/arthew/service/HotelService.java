@@ -11,15 +11,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface HotelService {
 
-  Page<Hotel> getAllHotels(Pageable pageable);
+    Page<Hotel> getAllHotels(Pageable pageable);
 
-  HotelDto getHotelById(Long id);
+    HotelDto getHotelById(Long id);
 
-  HotelDto getHotelByName(String name);
+    HotelDto getHotelByName(String name);
 
-  HotelDto createHotel(CreateHotelRequest request);
+    HotelDto createHotel(CreateHotelRequest request);
 
-  HotelDto updateHotel(Long id, HotelDto hotelDto);
+    HotelDto updateHotel(Long id, HotelDto hotelDto);
 
-  void deleteHotel(Long id);
+    void deleteHotel(Long id);
 }

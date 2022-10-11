@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 /**
  * @author Vitaliy Kayrachka
  */
@@ -14,11 +16,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class CountryDto {
+public class PhotoDto {
 
-    private Long id;
+    private UUID id;
     private String name;
-    private Long regionCounter;
-    private Long placeCounter;
-    private Long hotelCounter;
+    private String file;
 }

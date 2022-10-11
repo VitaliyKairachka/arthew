@@ -11,13 +11,13 @@ import org.springframework.data.domain.Pageable;
  */
 public interface NumberService {
 
-  Page<Number> getAllNumbers(Pageable pageable);
+    Page<Number> getAllNumbers(Pageable pageable);
 
-  NumberDto getNumberById(Long id);
+    NumberDto getNumberById(Long id);
 
-  NumberDto createNumber(CreateNumberRequest request);
+    NumberDto createNumber(CreateNumberRequest request);
 
-  NumberDto updateNumber(Long id, NumberDto numberDto);
+    NumberDto updateNumber(Long id, NumberDto numberDto);
 
-  void deleteNumber(Long id);
+    void deleteNumber(Long id);
 }

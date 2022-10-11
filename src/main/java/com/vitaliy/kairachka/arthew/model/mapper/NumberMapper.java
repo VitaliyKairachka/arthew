@@ -13,31 +13,31 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface NumberMapper {
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "photoCount", target = "photoCount")
-  @Mapping(source = "hotel", target = "hotel")
-  Number toEntityFromDto(NumberDto dto);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "photoCount", target = "photoCount")
+    @Mapping(source = "hotel", target = "hotel")
+    Number toEntityFromDto(NumberDto dto);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "photoCount", target = "photoCount")
-  @Mapping(source = "hotel", target = "hotel")
-  NumberDto toDtoFromEntity(Number entity);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "photoCount", target = "photoCount")
+    @Mapping(source = "hotel", target = "hotel")
+    NumberDto toDtoFromEntity(Number entity);
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(target = "photoCount", ignore = true)
-  @Mapping(source = "hotel", target = "hotel")
-  NumberDto toDtoFromRequest(CreateNumberRequest request);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(target = "photoCount", ignore = true)
+    @Mapping(source = "hotel", target = "hotel")
+    NumberDto toDtoFromRequest(CreateNumberRequest request);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "description", target = "description")
-  @Mapping(source = "photoCount", target = "photoCount")
-  @Mapping(source = "hotel", target = "hotel")
-  NumberDto merge(@MappingTarget NumberDto source, Number target);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "photoCount", target = "photoCount")
+    @Mapping(source = "hotel", target = "hotel")
+    NumberDto merge(@MappingTarget NumberDto source, Number target);
 }

@@ -20,41 +20,41 @@ import org.springframework.stereotype.Controller;
 @AllArgsConstructor
 public class CountryController {
 
-  private final CountryService countryService;
+    private final CountryService countryService;
 
-  @MessageMapping("/country")
-  @SendTo("/topic/messages")
-  public Page<Country> getAll(@Payload Pageable pageable) {
-    return countryService.getAllCountries(pageable);
-  }
+    @MessageMapping("/country")
+    @SendTo("/topic/messages")
+    public Page<Country> getAll(@Payload Pageable pageable) {
+        return countryService.getAllCountries(pageable);
+    }
 
-  @MessageMapping("/country/{id}")
-  @SendTo("/topic/messages")
-  public CountryDto getById(@DestinationVariable Long id) {
-    return countryService.getCountryById(id);
-  }
+    @MessageMapping("/country/{id}")
+    @SendTo("/topic/messages")
+    public CountryDto getById(@DestinationVariable Long id) {
+        return countryService.getCountryById(id);
+    }
 
-  @MessageMapping("/country/{name}")
-  @SendTo("/topic/messages")
-  public CountryDto getByName(@DestinationVariable String name) {
-    return countryService.getCountryByName(name);
-  }
+    @MessageMapping("/country/{name}")
+    @SendTo("/topic/messages")
+    public CountryDto getByName(@DestinationVariable String name) {
+        return countryService.getCountryByName(name);
+    }
 
-  @MessageMapping("/country/create")
-  @SendTo("/topic/messages")
-  public CountryDto create(@Payload CreateCountryRequest request) {
-    return countryService.createCountry(request);
-  }
+    @MessageMapping("/country/create")
+    @SendTo("/topic/messages")
+    public CountryDto create(@Payload CreateCountryRequest request) {
+        return countryService.createCountry(request);
+    }
 
-  @MessageMapping("/country/update/{id}")
-  @SendTo("/topic/messages")
-  public CountryDto update(@DestinationVariable Long id, @Payload CountryDto countryDto) {
-    return countryService.updateCountry(id, countryDto);
-  }
+    @MessageMapping("/country/update/{id}")
+    @SendTo("/topic/messages")
+    public CountryDto update(@DestinationVariable Long id, @Payload CountryDto countryDto) {
+        return countryService.updateCountry(id, countryDto);
+    }
 
-  @MessageMapping("/country/delete/{id}")
-  @SendTo("/topic/messages")
-  public void delete(@DestinationVariable Long id) {
-    countryService.deleteCountry(id);
-  }
+    @MessageMapping("/country/delete/{id}")
+    @SendTo("/topic/messages")
+    public void delete(@DestinationVariable Long id) {
+        countryService.deleteCountry(id);
+    }
 }

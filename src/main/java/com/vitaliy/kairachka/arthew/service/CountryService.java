@@ -11,15 +11,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CountryService {
 
-  Page<Country> getAllCountries(Pageable pageable);
+    Page<Country> getAllCountries(Pageable pageable);
 
-  CountryDto getCountryById(Long id);
+    CountryDto getCountryById(Long id);
 
-  CountryDto getCountryByName(String name);
+    CountryDto getCountryByName(String name);
 
-  CountryDto createCountry(CreateCountryRequest request);
+    CountryDto createCountry(CreateCountryRequest request);
 
-  CountryDto updateCountry(Long id, CountryDto countryDto);
+    CountryDto updateCountry(Long id, CountryDto countryDto);
 
-  void deleteCountry(Long id);
+    void deleteCountry(Long id);
 }

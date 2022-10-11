@@ -11,15 +11,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface RegionService {
 
-  Page<Region> getAllRegions(Pageable pageable);
+    Page<Region> getAllRegions(Pageable pageable);
 
-  RegionDto getRegionById(Long id);
+    RegionDto getRegionById(Long id);
 
-  RegionDto getRegionByName(String name);
+    RegionDto getRegionByName(String name);
 
-  RegionDto createRegion(CreateRegionRequest request);
+    RegionDto createRegion(CreateRegionRequest request);
 
-  RegionDto updateRegion(Long id, RegionDto regionDto);
+    RegionDto updateRegion(Long id, RegionDto regionDto);
 
-  void deleteRegion(Long id);
+    void deleteRegion(Long id);
 }

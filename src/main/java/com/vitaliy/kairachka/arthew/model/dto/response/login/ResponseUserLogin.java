@@ -1,4 +1,4 @@
-package com.vitaliy.kairachka.arthew.model.dto.response;
+package com.vitaliy.kairachka.arthew.model.dto.response.login;
 
 import com.vitaliy.kairachka.arthew.model.enums.Role;
 import lombok.AllArgsConstructor;
@@ -16,10 +16,10 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class ResponseUserLogin {
-  private Boolean isSuccess;
-  private Long id;
-  private String login;
-  private String password;
-  private String fio;
-  private Role role;
+    private Boolean isSuccess;
+    private Long id;
+    private String login;
+    private String password;
+    private String fio;
+    private Role role;
 }

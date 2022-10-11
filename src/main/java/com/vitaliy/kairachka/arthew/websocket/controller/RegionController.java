@@ -20,41 +20,41 @@ import org.springframework.stereotype.Controller;
 @AllArgsConstructor
 public class RegionController {
 
-  private final RegionService regionService;
+    private final RegionService regionService;
 
-  @MessageMapping("/region")
-  @SendTo("/topic/messages")
-  public Page<Region> getAll(@Payload Pageable pageable) {
-    return regionService.getAllRegions(pageable);
-  }
+    @MessageMapping("/region")
+    @SendTo("/topic/messages")
+    public Page<Region> getAll(@Payload Pageable pageable) {
+        return regionService.getAllRegions(pageable);
+    }
 
-  @MessageMapping("/country/{id}")
-  @SendTo("/topic/messages")
-  public RegionDto getById(@DestinationVariable Long id) {
-    return regionService.getRegionById(id);
-  }
+    @MessageMapping("/country/{id}")
+    @SendTo("/topic/messages")
+    public RegionDto getById(@DestinationVariable Long id) {
+        return regionService.getRegionById(id);
+    }
 
-  @MessageMapping("/country/{name}")
-  @SendTo("/topic/messages")
-  public RegionDto getByName(@DestinationVariable String name) {
-    return regionService.getRegionByName(name);
-  }
+    @MessageMapping("/country/{name}")
+    @SendTo("/topic/messages")
+    public RegionDto getByName(@DestinationVariable String name) {
+        return regionService.getRegionByName(name);
+    }
 
-  @MessageMapping("/country/create")
-  @SendTo("/topic/messages")
-  public RegionDto create(@Payload CreateRegionRequest request) {
-    return regionService.createRegion(request);
-  }
+    @MessageMapping("/country/create")
+    @SendTo("/topic/messages")
+    public RegionDto create(@Payload CreateRegionRequest request) {
+        return regionService.createRegion(request);
+    }
 
-  @MessageMapping("/country/update/{id}")
-  @SendTo("/topic/messages")
-  public RegionDto update(@DestinationVariable Long id, @Payload RegionDto regionDto) {
-    return regionService.updateRegion(id, regionDto);
-  }
+    @MessageMapping("/country/update/{id}")
+    @SendTo("/topic/messages")
+    public RegionDto update(@DestinationVariable Long id, @Payload RegionDto regionDto) {
+        return regionService.updateRegion(id, regionDto);
+    }
 
-  @MessageMapping("/country/delete/{id}")
-  @SendTo("/topic/messages")
-  public void delete(@DestinationVariable Long id) {
-    regionService.deleteRegion(id);
-  }
+    @MessageMapping("/country/delete/{id}")
+    @SendTo("/topic/messages")
+    public void delete(@DestinationVariable Long id) {
+        regionService.deleteRegion(id);
+    }
 }

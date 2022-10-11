@@ -20,41 +20,41 @@ import org.springframework.stereotype.Controller;
 @AllArgsConstructor
 public class TaskController {
 
-  private final TaskService taskService;
+    private final TaskService taskService;
 
-  @MessageMapping("/task")
-  @SendTo("/topic/messages")
-  public Page<Task> getAll(@Payload Pageable pageable) {
-    return taskService.getAllTasks(pageable);
-  }
+    @MessageMapping("/task")
+    @SendTo("/topic/messages")
+    public Page<Task> getAll(@Payload Pageable pageable) {
+        return taskService.getAllTasks(pageable);
+    }
 
-  @MessageMapping("/task/{id}")
-  @SendTo("/topic/messages")
-  public TaskDto getById(@DestinationVariable Long id) {
-    return taskService.getTaskById(id);
-  }
+    @MessageMapping("/task/{id}")
+    @SendTo("/topic/messages")
+    public TaskDto getById(@DestinationVariable Long id) {
+        return taskService.getTaskById(id);
+    }
 
-  @MessageMapping("/task/{name}")
-  @SendTo("/topic/messages")
-  public TaskDto getByName(@DestinationVariable String name) {
-    return taskService.getTaskByName(name);
-  }
+    @MessageMapping("/task/{name}")
+    @SendTo("/topic/messages")
+    public TaskDto getByName(@DestinationVariable String name) {
+        return taskService.getTaskByName(name);
+    }
 
-  @MessageMapping("/task/create")
-  @SendTo("/topic/messages")
-  public TaskDto create(@Payload CreateTaskRequest request) {
-    return taskService.createTask(request);
-  }
+    @MessageMapping("/task/create")
+    @SendTo("/topic/messages")
+    public TaskDto create(@Payload CreateTaskRequest request) {
+        return taskService.createTask(request);
+    }
 
-  @MessageMapping("/task/update/{id}")
-  @SendTo("/topic/messages")
-  public TaskDto update(@DestinationVariable Long id, @Payload TaskDto taskDto) {
-    return taskService.updateTask(id, taskDto);
-  }
+    @MessageMapping("/task/update/{id}")
+    @SendTo("/topic/messages")
+    public TaskDto update(@DestinationVariable Long id, @Payload TaskDto taskDto) {
+        return taskService.updateTask(id, taskDto);
+    }
 
-  @MessageMapping("/task/update/{id}")
-  @SendTo("/topic/messages")
-  public void delete(@DestinationVariable Long id) {
-    taskService.deleteTask(id);
-  }
+    @MessageMapping("/task/update/{id}")
+    @SendTo("/topic/messages")
+    public void delete(@DestinationVariable Long id) {
+        taskService.deleteTask(id);
+    }
 }

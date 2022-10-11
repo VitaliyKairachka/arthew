@@ -11,15 +11,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface TaskService {
 
-  Page<Task> getAllTasks(Pageable pageable);
+    Page<Task> getAllTasks(Pageable pageable);
 
-  TaskDto getTaskById(Long id);
+    TaskDto getTaskById(Long id);
 
-  TaskDto getTaskByName(String name);
+    TaskDto getTaskByName(String name);
 
-  TaskDto createTask(CreateTaskRequest request);
+    TaskDto createTask(CreateTaskRequest request);
 
-  TaskDto updateTask(Long id, TaskDto taskDto);
+    TaskDto updateTask(Long id, TaskDto taskDto);
 
-  void deleteTask(Long id);
+    void deleteTask(Long id);
 }

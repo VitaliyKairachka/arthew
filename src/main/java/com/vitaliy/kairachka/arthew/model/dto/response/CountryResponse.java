@@ -1,4 +1,4 @@
-package com.vitaliy.kairachka.arthew.model.dto.requests.login;
+package com.vitaliy.kairachka.arthew.model.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,12 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class LoginUserRequest {
-    private String login;
-    private String password;
+public class CountryResponse {
+
+    private Long id;
+    private String name;
+    private Long regionCounter;
+    private Long placeCounter;
+    private Long hotelCounter;
+    private Boolean isFound;
 }

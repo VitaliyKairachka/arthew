@@ -1,11 +1,12 @@
-package com.vitaliy.kairachka.arthew.model.dto;
+package com.vitaliy.kairachka.arthew.model.dto.response;
 
-import com.vitaliy.kairachka.arthew.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.UUID;
 
 /**
  * @author Vitaliy Kayrachka
@@ -15,11 +16,10 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class TaskDto {
+public class PhotoResponse {
 
-    private Long id;
+    private UUID id;
     private String name;
-    private String description;
-    private String notification;
-    private User user;
+    private String file;
+    private Boolean isFound;
 }

@@ -2,7 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Country;
+import com.vitaliy.kairachka.arthew.model.dto.response.CountryResponse;
 import com.vitaliy.kairachka.arthew.model.mapper.CountryMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.service.CountryService;
@@ -10,13 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Kayrachka
@@ -31,59 +30,68 @@ class CountryServiceImpl implements CountryService {
 
     @Override
     @Cacheable(value = "countries")
-    public List<Country> getAllCountries(Pageable pageable) {
+    public List<CountryResponse> getAllCountries(Pageable pageable) {
         log.info("Get all countries");
-        return countryRepository.findAll(pageable).toList();
+        var list = countryRepository.findAll(pageable).toList();
+        return list
+                .stream()
+                .map(countryMapper::toResponseFromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Cacheable(value = "countries")
-    public CountryDto getCountryById(Long id) {
+    public CountryResponse getCountryById(Long id) {
         var entity = countryRepository.findById(id);
         if (entity.isPresent()) {
             log.info("Get country with id: {}", id);
-            return countryMapper.toDtoFromEntity(entity.get());
+            return countryMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Country not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new CountryResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Cacheable(value = "countries")
-    public CountryDto getCountryByName(String name) {
+    public CountryResponse getCountryByName(String name) {
         var entity = countryRepository.findCountryByName(name);
         if (entity.isPresent()) {
             log.info("Get country with name: {}", name);
-            return countryMapper.toDtoFromEntity(entity.get());
+            return countryMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Country not found with name: {}", name);
-            throw new EntityNotFoundException(); //TODO
+            return new CountryResponse()
+                    .setName(name)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "countries", allEntries = true)
-    public CountryDto createCountry(CreateCountryRequest request) {
-        var countryDto = countryMapper.toDtoFromRequest(request);
-        var entity = countryMapper.toEntityFromDto(countryDto);
+    public CountryResponse createCountry(CreateCountryRequest request) {
+        var entity = countryMapper.toEntityFromRequest(request);
         log.info("Create new country with name: {}", entity.getName());
-        return countryMapper.toDtoFromEntity(countryRepository.save(entity));
+        return countryMapper.toResponseFromEntity(countryRepository.save(entity));
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "countries", allEntries = true)
-    public CountryDto updateCountry(Long id, CountryDto countryDto) {
+    public CountryResponse updateCountry(Long id, CountryDto countryDto) {
         var target = countryRepository.findById(id);
         if (target.isPresent()) {
             var update = countryMapper.toEntityFromDto(countryMapper.merge(countryDto, target.get()));
             log.info("Country update with id: {}", id);
-            return countryMapper.toDtoFromEntity(countryRepository.save(update));
+            return countryMapper.toResponseFromEntity(countryRepository.save(update));
         } else {
             log.info("Country not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new CountryResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 

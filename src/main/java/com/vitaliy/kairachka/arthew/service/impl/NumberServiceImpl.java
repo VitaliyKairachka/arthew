@@ -2,7 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.NumberDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateNumberRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Number;
+import com.vitaliy.kairachka.arthew.model.dto.response.NumberResponse;
 import com.vitaliy.kairachka.arthew.model.mapper.NumberMapper;
 import com.vitaliy.kairachka.arthew.repository.HotelRepository;
 import com.vitaliy.kairachka.arthew.repository.NumberRepository;
@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Kayrachka
@@ -32,28 +32,34 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Cacheable(value = "numbers")
-    public List<Number> getAllNumbers(Pageable pageable) {
+    public List<NumberResponse> getAllNumbers(Pageable pageable) {
         log.info("Get all numbers");
-        return numberRepository.findAll(pageable).toList();
+        var list = numberRepository.findAll(pageable).toList();
+        return list
+                .stream()
+                .map(numberMapper::toResponseFromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Cacheable(value = "numbers")
-    public NumberDto getNumberById(Long id) {
+    public NumberResponse getNumberById(Long id) {
         var entity = numberRepository.findById(id);
         if (entity.isPresent()) {
             log.info("Get number with id: {}", id);
-            return numberMapper.toDtoFromEntity(entity.get());
+            return numberMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Number not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new NumberResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "numbers", allEntries = true)
-    public NumberDto createNumber(CreateNumberRequest request) {
+    public NumberResponse createNumber(CreateNumberRequest request) {
         var numberDto = numberMapper.toDtoFromRequest(request);
         var entity = numberMapper.toEntityFromDto(numberDto);
         var hotelEntity = numberDto.getHotel();
@@ -66,21 +72,23 @@ public class NumberServiceImpl implements NumberService {
             });
         }
         log.info("Create new number");
-        return numberMapper.toDtoFromEntity(numberRepository.save(entity));
+        return numberMapper.toResponseFromEntity(numberRepository.save(entity));
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "numbers", allEntries = true)
-    public NumberDto updateNumber(Long id, NumberDto numberDto) {
+    public NumberResponse updateNumber(Long id, NumberDto numberDto) {
         var target = numberRepository.findById(id);
         if (target.isPresent()) {
             var update = numberMapper.toEntityFromDto(numberMapper.merge(numberDto, target.get()));
             log.info("Number update with id: {}", id);
-            return numberMapper.toDtoFromEntity(numberRepository.save(update));
+            return numberMapper.toResponseFromEntity(numberRepository.save(update));
         } else {
             log.info("Number not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new NumberResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 

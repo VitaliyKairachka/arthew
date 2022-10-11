@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.HotelResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Hotel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -35,5 +36,13 @@ public interface HotelMapper {
     @Mapping(source = "numberCount", target = "numberCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "place", target = "place")
-    HotelDto merge(@MappingTarget HotelDto hotelDto, Hotel target);
+    HotelDto merge(HotelDto hotelDto, @MappingTarget Hotel target);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "numberCount", target = "numberCount")
+    @Mapping(source = "photoCount", target = "photoCount")
+    @Mapping(source = "place", target = "place")
+    @Mapping(target = "isFound", defaultValue = "true")
+    HotelResponse toResponseFromEntity(Hotel entity);
 }

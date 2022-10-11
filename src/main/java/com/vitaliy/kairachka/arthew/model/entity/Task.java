@@ -32,7 +32,7 @@ public class Task {
     private String description;
 
     @Column(name = "notification")
-    private String notification; //TODO уведомление
+    private String notification;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")

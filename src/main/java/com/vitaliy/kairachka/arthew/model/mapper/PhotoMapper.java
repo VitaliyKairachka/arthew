@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.PhotoDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePhotoRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.PhotoResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Photo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,4 +27,10 @@ public interface PhotoMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "file", target = "file")
     PhotoDto toDtoFromRequest(CreatePhotoRequest request);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "file", target = "file")
+    @Mapping(target = "isFound", defaultValue = "true")
+    PhotoResponse toResponseFromEntity(Photo entity);
 }

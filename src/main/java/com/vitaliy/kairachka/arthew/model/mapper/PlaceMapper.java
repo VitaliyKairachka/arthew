@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.PlaceDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreatePlaceRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.PlaceResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Place;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -35,5 +36,13 @@ public interface PlaceMapper {
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "region", target = "region")
-    PlaceDto merge(@MappingTarget PlaceDto source, Place place);
+    PlaceDto merge(PlaceDto source, @MappingTarget Place place);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "hotelCount", target = "hotelCount")
+    @Mapping(source = "photoCount", target = "photoCount")
+    @Mapping(source = "region", target = "region")
+    @Mapping(target = "isFound", defaultValue = "true")
+    PlaceResponse toResponseFromEntity(Place entity);
 }

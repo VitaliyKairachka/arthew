@@ -2,7 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.RegionDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateRegionRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Region;
+import com.vitaliy.kairachka.arthew.model.dto.response.RegionResponse;
 import com.vitaliy.kairachka.arthew.model.mapper.RegionMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.repository.RegionRepository;
@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Kayrachka
@@ -33,41 +33,49 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Cacheable(value = "regions")
-    public List<Region> getAllRegions(Pageable pageable) {
+    public List<RegionResponse> getAllRegions(Pageable pageable) {
         log.info("Get all regions");
-        return regionRepository.findAll(pageable).toList();
+        var list = regionRepository.findAll(pageable).toList();
+        return list
+                .stream()
+                .map(regionMapper::toResponseFromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Cacheable(value = "regions")
-    public RegionDto getRegionById(Long id) {
+    public RegionResponse getRegionById(Long id) {
         var entity = regionRepository.findById(id);
         if (entity.isPresent()) {
             log.info("Get region with id: {}", id);
-            return regionMapper.toDtoFromEntity(entity.get());
+            return regionMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Region not found with id: {}", id);
-            throw new RuntimeException();  //TODO
+            return new RegionResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Cacheable(value = "regions")
-    public RegionDto getRegionByName(String name) {
+    public RegionResponse getRegionByName(String name) {
         var entity = regionRepository.findRegionByName(name);
         if (entity.isPresent()) {
             log.info("Get region with name: {}", name);
-            return regionMapper.toDtoFromEntity(entity.get());
+            return regionMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Region not found with name: {}", name);
-            throw new RuntimeException();  //TODO
+            return new RegionResponse()
+                    .setName(name)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "regions", allEntries = true)
-    public RegionDto createRegion(CreateRegionRequest request) {
+    public RegionResponse createRegion(CreateRegionRequest request) {
         var regionDto = regionMapper.toDtoFromRequest(request);
         var entity = regionMapper.toEntityFromDto(regionDto);
         var countryDto = regionDto.getCountry();
@@ -76,20 +84,22 @@ public class RegionServiceImpl implements RegionService {
             country.ifPresent(entity::setCountry);
         }
         log.info("Create new region with name: {}", entity.getName());
-        return regionMapper.toDtoFromEntity(regionRepository.save(entity));
+        return regionMapper.toResponseFromEntity(regionRepository.save(entity));
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "regions", allEntries = true)
-    public RegionDto updateRegion(Long id, RegionDto regionDto) {
+    public RegionResponse updateRegion(Long id, RegionDto regionDto) {
         var target = regionRepository.findById(id);
         if (target.isPresent()) {
             var update = regionMapper.toEntityFromDto(regionMapper.merge(regionDto, target.get()));
-            return regionMapper.toDtoFromEntity(regionRepository.save(update));
+            return regionMapper.toResponseFromEntity(regionRepository.save(update));
         } else {
             log.info("Region not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new RegionResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 

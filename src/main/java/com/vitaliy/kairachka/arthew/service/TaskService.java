@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.TaskResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +14,15 @@ import java.util.List;
  */
 public interface TaskService {
 
-    List<Task> getAllTasks(Pageable pageable);
+    List<TaskResponse> getAllTasks(Pageable pageable);
 
-    TaskDto getTaskById(Long id);
+    TaskResponse getTaskById(Long id);
 
-    TaskDto getTaskByName(String name);
+    TaskResponse getTaskByName(String name);
 
-    TaskDto createTask(CreateTaskRequest request);
+    TaskResponse createTask(CreateTaskRequest request);
 
-    TaskDto updateTask(Long id, TaskDto taskDto);
+    TaskResponse updateTask(Long id, TaskDto taskDto);
 
     void deleteTask(Long id);
 }

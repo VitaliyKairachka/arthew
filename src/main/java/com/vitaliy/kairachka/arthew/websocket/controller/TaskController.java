@@ -3,10 +3,9 @@ package com.vitaliy.kairachka.arthew.websocket.controller;
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.PageableRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Task;
+import com.vitaliy.kairachka.arthew.model.dto.response.TaskResponse;
 import com.vitaliy.kairachka.arthew.service.TaskService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -28,32 +27,32 @@ public class TaskController {
 
     @MessageMapping("/task")
     @SendTo("/topic/messages")
-    public List<Task> getAll(@Payload PageableRequest page) {
+    public List<TaskResponse> getAll(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return taskService.getAllTasks(pageable);
     }
 
     @MessageMapping("/task/{id}")
     @SendTo("/topic/messages")
-    public TaskDto getById(@DestinationVariable Long id) {
+    public TaskResponse getById(@DestinationVariable Long id) {
         return taskService.getTaskById(id);
     }
 
     @MessageMapping("/task/{name}")
     @SendTo("/topic/messages")
-    public TaskDto getByName(@DestinationVariable String name) {
+    public TaskResponse getByName(@DestinationVariable String name) {
         return taskService.getTaskByName(name);
     }
 
     @MessageMapping("/task/create")
     @SendTo("/topic/messages")
-    public TaskDto create(@Payload CreateTaskRequest request) {
+    public TaskResponse create(@Payload CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 
     @MessageMapping("/task/update/{id}")
     @SendTo("/topic/messages")
-    public TaskDto update(@DestinationVariable Long id, @Payload TaskDto taskDto) {
+    public TaskResponse update(@DestinationVariable Long id, @Payload TaskDto taskDto) {
         return taskService.updateTask(id, taskDto);
     }
 

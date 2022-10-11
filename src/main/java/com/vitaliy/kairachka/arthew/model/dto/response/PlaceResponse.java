@@ -1,6 +1,6 @@
-package com.vitaliy.kairachka.arthew.model.dto;
+package com.vitaliy.kairachka.arthew.model.dto.response;
 
-import com.vitaliy.kairachka.arthew.model.entity.User;
+import com.vitaliy.kairachka.arthew.model.entity.Region;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,12 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class TaskDto {
+public class PlaceResponse {
 
     private Long id;
     private String name;
-    private String description;
-    private String notification;
-    private User user;
+    private Long hotelCount;
+    private Long photoCount;
+    private Region region;
+    private Boolean isFound;
 }

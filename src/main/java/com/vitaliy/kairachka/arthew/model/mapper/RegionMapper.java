@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.RegionDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateRegionRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.RegionResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Region;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -37,4 +38,12 @@ public interface RegionMapper {
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "country", target = "country")
     RegionDto merge(@MappingTarget RegionDto source, Region target);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "placeCount", target = "placeCount")
+    @Mapping(source = "hotelCount", target = "hotelCount")
+    @Mapping(source = "country", target = "country")
+    @Mapping(target = "isFound", defaultValue = "true")
+    RegionResponse toResponseFromEntity(Region entity);
 }

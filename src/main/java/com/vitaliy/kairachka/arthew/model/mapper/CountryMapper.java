@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.CountryDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateCountryRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.CountryResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Country;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,10 +35,25 @@ public interface CountryMapper {
     @Mapping(target = "hotelCounter", ignore = true)
     CountryDto toDtoFromRequest(CreateCountryRequest request);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "name", target = "name")
+    @Mapping(target = "regionCounter", ignore = true)
+    @Mapping(target = "placeCounter", ignore = true)
+    @Mapping(target = "hotelCounter", ignore = true)
+    Country toEntityFromRequest(CreateCountryRequest request);
+
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "regionCounter", target = "regionCounter")
     @Mapping(source = "placeCounter", target = "placeCounter")
     @Mapping(source = "hotelCounter", target = "hotelCounter")
-    CountryDto merge(@MappingTarget CountryDto source, Country target);
+    @Mapping(target = "isFound", defaultValue = "true")
+    CountryResponse toResponseFromEntity(Country entity);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "regionCounter", target = "regionCounter")
+    @Mapping(source = "placeCounter", target = "placeCounter")
+    @Mapping(source = "hotelCounter", target = "hotelCounter")
+    CountryDto merge(CountryDto source, @MappingTarget Country target);
 }

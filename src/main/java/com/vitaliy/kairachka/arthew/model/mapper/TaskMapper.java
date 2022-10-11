@@ -2,6 +2,7 @@ package com.vitaliy.kairachka.arthew.model.mapper;
 
 import com.vitaliy.kairachka.arthew.model.dto.TaskDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateTaskRequest;
+import com.vitaliy.kairachka.arthew.model.dto.response.TaskResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -38,5 +39,13 @@ public interface TaskMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "notification", target = "notification")
     @Mapping(source = "user", target = "user")
-    TaskDto merge(@MappingTarget TaskDto source, Task target);
+    TaskDto merge(TaskDto source, @MappingTarget Task target);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "notification", target = "notification")
+    @Mapping(source = "user", target = "user")
+    @Mapping(target = "isFound", defaultValue = "true")
+    TaskResponse toResponseFromEntity(Task entity);
 }

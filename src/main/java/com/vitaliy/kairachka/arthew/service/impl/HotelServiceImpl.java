@@ -2,7 +2,7 @@ package com.vitaliy.kairachka.arthew.service.impl;
 
 import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateHotelRequest;
-import com.vitaliy.kairachka.arthew.model.entity.Hotel;
+import com.vitaliy.kairachka.arthew.model.dto.response.HotelResponse;
 import com.vitaliy.kairachka.arthew.model.mapper.HotelMapper;
 import com.vitaliy.kairachka.arthew.repository.CountryRepository;
 import com.vitaliy.kairachka.arthew.repository.HotelRepository;
@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Vitaliy Kayrachka
@@ -36,41 +36,49 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @Cacheable(value = "hotels")
-    public List<Hotel> getAllHotels(Pageable pageable) {
+    public List<HotelResponse> getAllHotels(Pageable pageable) {
         log.info("Get all hotels");
-        return hotelRepository.findAll(pageable).toList();
+        var list = hotelRepository.findAll(pageable).toList();
+        return list
+                .stream()
+                .map(hotelMapper::toResponseFromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Cacheable(value = "hotels")
-    public HotelDto getHotelById(Long id) {
+    public HotelResponse getHotelById(Long id) {
         var entity = hotelRepository.findById(id);
         if (entity.isPresent()) {
             log.info("Get hotel with id: {}", id);
-            return hotelMapper.toDtoFromEntity(entity.get());
+            return hotelMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Hotel not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new HotelResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Cacheable(value = "hotels")
-    public HotelDto getHotelByName(String name) {
+    public HotelResponse getHotelByName(String name) {
         var entity = hotelRepository.findHotelByName(name);
         if (entity.isPresent()) {
             log.info("Get hotel with name: {}", name);
-            return hotelMapper.toDtoFromEntity(entity.get());
+            return hotelMapper.toResponseFromEntity(entity.get());
         } else {
             log.info("Hotel not found with name: {}", name);
-            throw new RuntimeException(); //TODO
+            return new HotelResponse()
+                    .setName(name)
+                    .setIsFound(false);
         }
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "hotels", allEntries = true)
-    public HotelDto createHotel(CreateHotelRequest request) {
+    public HotelResponse createHotel(CreateHotelRequest request) {
         var hotelDto = hotelMapper.toDtoFromRequest(request);
         var entity = hotelMapper.toEntityFromDto(hotelDto);
         var placeDto = hotelDto.getPlace();
@@ -80,10 +88,12 @@ public class HotelServiceImpl implements HotelService {
                 entity.setPlace(placePresent);
                 var placeTmp = placePresent.setHotelCount(place.get().getHotelCount() + 1);
                 placeRepository.save(placeTmp);
+
                 var region = regionRepository.findById(placeTmp.getRegion().getId());
                 region.ifPresent(regionPresent -> {
                     var regionTmp = regionPresent.setHotelCount(regionPresent.getHotelCount() + 1);
                     regionRepository.save(regionTmp);
+
                     var country = countryRepository.findById(regionTmp.getCountry().getId());
                     country.ifPresent(countryPresent -> {
                         var countryTmp = countryPresent.setHotelCounter(country.get().getHotelCounter() + 1);
@@ -93,21 +103,23 @@ public class HotelServiceImpl implements HotelService {
             });
         }
         log.info("Create new hotel with name: {}", entity.getName());
-        return hotelMapper.toDtoFromEntity(hotelRepository.save(entity));
+        return hotelMapper.toResponseFromEntity(hotelRepository.save(entity));
     }
 
     @Override
     @Transactional
     @CacheEvict(value = "hotels", allEntries = true)
-    public HotelDto updateHotel(Long id, HotelDto hotelDto) {
+    public HotelResponse updateHotel(Long id, HotelDto hotelDto) {
         var target = hotelRepository.findById(id);
         if (target.isPresent()) {
             var update = hotelMapper.toEntityFromDto(hotelMapper.merge(hotelDto, target.get()));
             log.info("Hotel update with id: {}", id);
-            return hotelMapper.toDtoFromEntity(hotelRepository.save(update));
+            return hotelMapper.toResponseFromEntity(hotelRepository.save(update));
         } else {
             log.info("Hotel not found with id: {}", id);
-            throw new RuntimeException(); //TODO
+            return new HotelResponse()
+                    .setId(id)
+                    .setIsFound(false);
         }
     }
 
@@ -117,6 +129,23 @@ public class HotelServiceImpl implements HotelService {
     public void deleteHotel(Long id) {
         var target = hotelRepository.findById(id);
         if (target.isPresent()) {
+            var place = placeRepository.findById(target.get().getPlace().getId());
+            place.ifPresent(placePresent -> {
+                placePresent.setHotelCount(placePresent.getHotelCount() - 1);
+                placeRepository.save(placePresent);
+
+                var region = regionRepository.findById(placePresent.getRegion().getId());
+                region.ifPresent(regionPresent -> {
+                    regionPresent.setHotelCount(regionPresent.getHotelCount() - 1);
+                    regionRepository.save(regionPresent);
+
+                    var country = countryRepository.findById(regionPresent.getCountry().getId());
+                    country.ifPresent(countryPresent -> {
+                        countryPresent.setHotelCounter(countryPresent.getHotelCounter() - 1);
+                        countryRepository.save(countryPresent);
+                    });
+                });
+            });
             hotelRepository.delete(target.get());
             log.info("Hotel deleted with id: {}", id);
         } else {

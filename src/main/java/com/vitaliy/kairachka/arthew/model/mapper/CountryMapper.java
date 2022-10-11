@@ -47,7 +47,7 @@ public interface CountryMapper {
     @Mapping(source = "regionCounter", target = "regionCounter")
     @Mapping(source = "placeCounter", target = "placeCounter")
     @Mapping(source = "hotelCounter", target = "hotelCounter")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     CountryResponse toResponseFromEntity(Country entity);
 
     @Mapping(source = "id", target = "id")
@@ -55,5 +55,5 @@ public interface CountryMapper {
     @Mapping(source = "regionCounter", target = "regionCounter")
     @Mapping(source = "placeCounter", target = "placeCounter")
     @Mapping(source = "hotelCounter", target = "hotelCounter")
-    CountryDto merge(CountryDto source, @MappingTarget Country target);
+    CountryDto merge(Country target);
 }

@@ -80,7 +80,12 @@ public class PlaceServiceImpl implements PlaceService {
         var regionDto = placeDto.getRegion();
         if (regionDto != null) {
             var region = regionRepository.findById(regionDto.getId());
-            region.ifPresent(entity::setRegion);
+            region.ifPresent(regionPresent -> {
+                entity.setRegion(regionPresent);
+                regionPresent.setPlaceCount(regionPresent.getPlaceCount() + 1);
+                regionRepository.save(regionPresent);
+            });
+
         }
         log.info("Create new place with name: {}", entity.getName());
         return placeMapper.toResponseFromEntity(placeRepository.save(entity));
@@ -92,7 +97,7 @@ public class PlaceServiceImpl implements PlaceService {
     public PlaceResponse updatePlace(Long id, PlaceDto placeDto) {
         var target = placeRepository.findById(id);
         if (target.isPresent()) {
-            var update = placeMapper.toEntityFromDto(placeMapper.merge(placeDto, target.get()));
+            var update = placeMapper.toEntityFromDto(placeMapper.merge(target.get()));
             log.info("Place update with id: {}", id);
             return placeMapper.toResponseFromEntity(placeRepository.save(update));
         } else {
@@ -109,6 +114,11 @@ public class PlaceServiceImpl implements PlaceService {
     public void deletePlace(Long id) {
         var target = placeRepository.findById(id);
         if (target.isPresent()) {
+            var region = regionRepository.findById(target.get().getRegion().getId());
+            region.ifPresent(regionPresent -> {
+                regionPresent.setPlaceCount(regionPresent.getPlaceCount() - 1);
+                regionRepository.save(regionPresent);
+            });
             placeRepository.delete(target.get());
             log.info("Place deleted with id: {}", id);
         } else {

@@ -44,6 +44,6 @@ public interface RegionMapper {
     @Mapping(source = "placeCount", target = "placeCount")
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "country", target = "country")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     RegionResponse toResponseFromEntity(Region entity);
 }

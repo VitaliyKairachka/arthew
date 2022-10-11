@@ -31,6 +31,6 @@ public interface PhotoMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "file", target = "file")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     PhotoResponse toResponseFromEntity(Photo entity);
 }

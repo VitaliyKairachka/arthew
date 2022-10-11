@@ -81,7 +81,7 @@ public class NumberServiceImpl implements NumberService {
     public NumberResponse updateNumber(Long id, NumberDto numberDto) {
         var target = numberRepository.findById(id);
         if (target.isPresent()) {
-            var update = numberMapper.toEntityFromDto(numberMapper.merge(numberDto, target.get()));
+            var update = numberMapper.toEntityFromDto(numberMapper.merge(target.get()));
             log.info("Number update with id: {}", id);
             return numberMapper.toResponseFromEntity(numberRepository.save(update));
         } else {

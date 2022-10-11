@@ -39,13 +39,13 @@ public interface TaskMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "notification", target = "notification")
     @Mapping(source = "user", target = "user")
-    TaskDto merge(TaskDto source, @MappingTarget Task target);
+    TaskDto merge(Task target);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "notification", target = "notification")
     @Mapping(source = "user", target = "user")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     TaskResponse toResponseFromEntity(Task entity);
 }

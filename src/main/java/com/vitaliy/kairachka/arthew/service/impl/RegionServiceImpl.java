@@ -81,7 +81,11 @@ public class RegionServiceImpl implements RegionService {
         var countryDto = regionDto.getCountry();
         if (countryDto != null) {
             var country = countryRepository.findById(countryDto.getId());
-            country.ifPresent(entity::setCountry);
+            country.ifPresent(countryPresent -> {
+                entity.setCountry(countryPresent);
+                countryPresent.setRegionCounter(countryPresent.getRegionCounter() + 1);
+                countryRepository.save(countryPresent);
+            });
         }
         log.info("Create new region with name: {}", entity.getName());
         return regionMapper.toResponseFromEntity(regionRepository.save(entity));
@@ -109,6 +113,11 @@ public class RegionServiceImpl implements RegionService {
     public void deleteRegion(Long id) {
         var target = regionRepository.findById(id);
         if (target.isPresent()) {
+            var country = countryRepository.findById(target.get().getCountry().getId());
+            country.ifPresent(countryPresent -> {
+                countryPresent.setRegionCounter(countryPresent.getRegionCounter() - 1);
+                countryRepository.save(countryPresent);
+            });
             regionRepository.delete(target.get());
             log.info("Region deleted with id: {}", id);
         } else {

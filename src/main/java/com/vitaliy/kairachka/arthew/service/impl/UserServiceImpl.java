@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse updateUser(Long id, UserDto userDto) {
         var target = userRepository.findById(id);
         if (target.isPresent()) {
-            var update = userMapper.toEntityFromDto(userMapper.merge(userDto, target.get()));
+            var update = userMapper.toEntityFromDto(userMapper.merge(target.get()));
             log.info("User update with id: {}", id);
             return userMapper.toResponseFromEntity(userRepository.save(update));
         } else {

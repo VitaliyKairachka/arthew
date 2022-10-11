@@ -112,7 +112,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelResponse updateHotel(Long id, HotelDto hotelDto) {
         var target = hotelRepository.findById(id);
         if (target.isPresent()) {
-            var update = hotelMapper.toEntityFromDto(hotelMapper.merge(hotelDto, target.get()));
+            var update = hotelMapper.toEntityFromDto(hotelMapper.merge(target.get()));
             log.info("Hotel update with id: {}", id);
             return hotelMapper.toResponseFromEntity(hotelRepository.save(update));
         } else {

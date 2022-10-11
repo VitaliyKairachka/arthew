@@ -36,13 +36,13 @@ public interface PlaceMapper {
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "region", target = "region")
-    PlaceDto merge(PlaceDto source, @MappingTarget Place place);
+    PlaceDto merge(Place place);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "region", target = "region")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     PlaceResponse toResponseFromEntity(Place entity);
 }

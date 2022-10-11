@@ -42,13 +42,13 @@ public interface NumberMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "hotel", target = "hotel")
-    NumberDto merge(NumberDto source, @MappingTarget Number target);
+    NumberDto merge(Number target);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "hotel", target = "hotel")
-    @Mapping(target = "isFound", defaultValue = "true")
+    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
     NumberResponse toResponseFromEntity(Number entity);
 }

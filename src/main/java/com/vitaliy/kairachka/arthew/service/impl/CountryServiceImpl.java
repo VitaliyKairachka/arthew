@@ -84,7 +84,7 @@ class CountryServiceImpl implements CountryService {
     public CountryResponse updateCountry(Long id, CountryDto countryDto) {
         var target = countryRepository.findById(id);
         if (target.isPresent()) {
-            var update = countryMapper.toEntityFromDto(countryMapper.merge(countryDto, target.get()));
+            var update = countryMapper.toEntityFromDto(countryMapper.merge(target.get()));
             log.info("Country update with id: {}", id);
             return countryMapper.toResponseFromEntity(countryRepository.save(update));
         } else {

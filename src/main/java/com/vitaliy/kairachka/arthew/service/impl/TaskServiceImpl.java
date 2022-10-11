@@ -117,7 +117,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponse updateTask(Long id, TaskDto taskDto) {
         var target = taskRepository.findById(id);
         if (target.isPresent()) {
-            var update = taskMapper.toEntityFromDto(taskMapper.merge(taskDto, target.get()));
+            var update = taskMapper.toEntityFromDto(taskMapper.merge(target.get()));
             log.info("Task update with id: {}", id);
             return taskMapper.toResponseFromEntity(taskRepository.save(update));
         } else {

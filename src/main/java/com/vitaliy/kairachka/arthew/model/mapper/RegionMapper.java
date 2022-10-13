@@ -32,18 +32,18 @@ public interface RegionMapper {
     @Mapping(source = "country", target = "country")
     RegionDto toDtoFromRequest(CreateRegionRequest request);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "placeCount", target = "placeCount")
-    @Mapping(source = "hotelCount", target = "hotelCount")
-    @Mapping(source = "country", target = "country")
-    RegionDto merge(@MappingTarget RegionDto source, Region target);
+    @Mapping(target = "placeCount", ignore = true)
+    @Mapping(target = "hotelCount", ignore = true)
+    @Mapping(target = "country", ignore = true)
+    Region merge(@MappingTarget Region target, Region source);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "placeCount", target = "placeCount")
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "country", target = "country")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     RegionResponse toResponseFromEntity(Region entity);
 }

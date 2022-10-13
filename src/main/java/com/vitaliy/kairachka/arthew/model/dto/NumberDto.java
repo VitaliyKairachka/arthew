@@ -18,7 +18,6 @@ import lombok.experimental.Accessors;
 public class NumberDto {
 
     private Long id;
-    private String name;
     private String description;
     private Long photoCount;
     private Hotel hotel;

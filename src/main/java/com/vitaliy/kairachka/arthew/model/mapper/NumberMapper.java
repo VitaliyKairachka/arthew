@@ -17,38 +17,33 @@ import org.mapstruct.MappingTarget;
 public interface NumberMapper {
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "hotel", target = "hotel")
     Number toEntityFromDto(NumberDto dto);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "hotel", target = "hotel")
     NumberDto toDtoFromEntity(Number entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(target = "photoCount", ignore = true)
     @Mapping(source = "hotel", target = "hotel")
     NumberDto toDtoFromRequest(CreateNumberRequest request);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "description", target = "description")
-    @Mapping(source = "photoCount", target = "photoCount")
-    @Mapping(source = "hotel", target = "hotel")
-    NumberDto merge(Number target);
+    @Mapping(target = "photoCount", ignore = true)
+    @Mapping(target = "hotel", ignore = true)
+    Number merge(@MappingTarget Number target, Number source);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "hotel", target = "hotel")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     NumberResponse toResponseFromEntity(Number entity);
 }

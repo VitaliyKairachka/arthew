@@ -31,11 +31,9 @@ public class Region {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ColumnDefault("0")
     @Column(name = "place_count")
     private Long placeCount;
 
-    @ColumnDefault("0")
     @Column(name = "hotel_count")
     private Long hotelCount;
 
@@ -44,6 +42,6 @@ public class Region {
     private Country country;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Place> places;
 }

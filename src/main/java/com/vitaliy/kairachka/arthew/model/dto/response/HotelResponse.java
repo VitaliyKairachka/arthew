@@ -22,5 +22,5 @@ public class HotelResponse {
     private Long numberCount;
     private Long photoCount;
     private Place place;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

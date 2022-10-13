@@ -18,9 +18,8 @@ import lombok.experimental.Accessors;
 public class NumberResponse {
 
     private Long id;
-    private String name;
     private String description;
     private Long photoCount;
     private Hotel hotel;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

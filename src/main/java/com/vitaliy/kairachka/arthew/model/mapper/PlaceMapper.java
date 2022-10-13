@@ -31,18 +31,18 @@ public interface PlaceMapper {
     @Mapping(source = "name", target = "name")
     PlaceDto toDtoFromRequest(CreatePlaceRequest request);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "hotelCount", target = "hotelCount")
-    @Mapping(source = "photoCount", target = "photoCount")
-    @Mapping(source = "region", target = "region")
-    PlaceDto merge(Place place);
+    @Mapping(target = "hotelCount", ignore = true)
+    @Mapping(target = "photoCount", ignore = true)
+    @Mapping(target = "region", ignore = true)
+    Place merge(@MappingTarget Place target, Place source);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "hotelCount", target = "hotelCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "region", target = "region")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     PlaceResponse toResponseFromEntity(Place entity);
 }

@@ -34,18 +34,18 @@ public interface UserMapper {
     @Mapping(source = "role", target = "role")
     UserDto toDtoFromRequest(CreateUserRequest request);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "login", target = "login")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "fio", target = "fio")
     @Mapping(source = "role", target = "role")
-    UserDto merge(User user);
+    User merge(@MappingTarget User target, User source);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "login", target = "login")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "fio", target = "fio")
     @Mapping(source = "role", target = "role")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     UserResponse toResponseFromEntity(User entity);
 }

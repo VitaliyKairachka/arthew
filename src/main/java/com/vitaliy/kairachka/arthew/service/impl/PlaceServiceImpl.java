@@ -35,6 +35,7 @@ public class PlaceServiceImpl implements PlaceService {
     public List<PlaceResponse> getAllPlaces(Pageable pageable) {
         log.info("Get all places");
         var list = placeRepository.findAll(pageable).toList();
+        System.out.println(list);
         return list
                 .stream()
                 .map(placeMapper::toResponseFromEntity)
@@ -73,10 +74,10 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "places", allEntries = true)
+    @CacheEvict(value = { "places", "regions" }, allEntries = true)
     public PlaceResponse createPlace(CreatePlaceRequest request) {
         var placeDto = placeMapper.toDtoFromRequest(request);
-        var entity = placeMapper.toEntityFromDto(placeDto);
+        var entity = placeMapper.toEntityFromDto(placeDto).setHotelCount(0L).setPhotoCount(0L);
         var regionDto = placeDto.getRegion();
         if (regionDto != null) {
             var region = regionRepository.findById(regionDto.getId());
@@ -96,8 +97,9 @@ public class PlaceServiceImpl implements PlaceService {
     @CacheEvict(value = "places", allEntries = true)
     public PlaceResponse updatePlace(Long id, PlaceDto placeDto) {
         var target = placeRepository.findById(id);
+        var updatePlace = placeMapper.toEntityFromDto(placeDto);
         if (target.isPresent()) {
-            var update = placeMapper.toEntityFromDto(placeMapper.merge(target.get()));
+            var update = placeMapper.merge(target.get(), updatePlace);
             log.info("Place update with id: {}", id);
             return placeMapper.toResponseFromEntity(placeRepository.save(update));
         } else {
@@ -110,7 +112,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "places", allEntries = true)
+    @CacheEvict(value = { "places", "regions" }, allEntries = true)
     public void deletePlace(Long id) {
         var target = placeRepository.findById(id);
         if (target.isPresent()) {

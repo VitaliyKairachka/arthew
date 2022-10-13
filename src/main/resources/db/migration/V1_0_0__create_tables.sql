@@ -10,11 +10,12 @@ CREATE TABLE "photos"
 CREATE TABLE "numbers"
 (
     "id"          BIGINT GENERATED ALWAYS AS IDENTITY,
-    "name"        VARCHAR(255) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
     "photo_count" BIGINT       NOT NULL,
     "hotel_id"    BIGINT       NOT NULL
 );
+CREATE INDEX "numbers_id_hotel_id_index" ON
+    "numbers"("id", "hotel_id");
 ALTER TABLE
     "numbers"
     ADD PRIMARY KEY ("id");
@@ -26,6 +27,8 @@ CREATE TABLE "hotels"
     "photo_count"  BIGINT       NOT NULL,
     "place_id"     BIGINT       NOT NULL
 );
+CREATE INDEX "hotels_place_id_id_index" ON
+    "hotels"("place_id", "id");
 ALTER TABLE
     "hotels"
     ADD PRIMARY KEY ("id");
@@ -37,6 +40,8 @@ CREATE TABLE "places"
     "photo_count" BIGINT       NOT NULL,
     "region_id"   BIGINT       NOT NULL
 );
+CREATE INDEX "places_id_region_id_index" ON
+    "places"("id", "region_id");
 ALTER TABLE
     "places"
     ADD PRIMARY KEY ("id");
@@ -48,6 +53,8 @@ CREATE TABLE "regions"
     "hotel_count" BIGINT       NOT NULL,
     "country_id"  BIGINT       NOT NULL
 );
+CREATE INDEX "regions_id_country_id_index" ON
+    "regions"("id", "country_id");
 ALTER TABLE
     "regions"
     ADD PRIMARY KEY ("id");

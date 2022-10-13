@@ -34,38 +34,38 @@ public class UserController {
     }
 
     @MessageMapping("/user")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/user")
     public List<UserResponse> getAll(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return userService.getAllUsers(pageable);
     }
 
-    @MessageMapping("/user/{id}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/user/id/{id}")
+    @SendTo("/topic/user")
     public UserResponse getById(@DestinationVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @MessageMapping("/user/{login}")
-    @SendTo("topic/messages")
+    @MessageMapping("/user/login/{login}")
+    @SendTo("topic/user")
     public UserResponse getByLogin(@DestinationVariable String login) {
         return userService.getUserByLogin(login);
     }
 
     @MessageMapping("/user/create")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/user")
     public UserResponse create(@Payload CreateUserRequest request) {
         return userService.createUser(request);
     }
 
     @MessageMapping("/user/update/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/user")
     public UserResponse update(@DestinationVariable Long id, @Payload UserDto userDto) {
         return userService.updateUser(id, userDto);
     }
 
     @MessageMapping("/user/delete/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/user")
     public void delete(@DestinationVariable Long id) {
         userService.deleteUser(id);
     }

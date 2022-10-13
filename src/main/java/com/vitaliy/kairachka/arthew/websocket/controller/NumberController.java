@@ -31,51 +31,51 @@ public class NumberController {
     private final PhotoService photoService;
 
     @MessageMapping("/number")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/number")
     public List<NumberResponse> getAll(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return numberService.getAllNumbers(pageable);
     }
 
-    @MessageMapping("number/{id}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/number/id/{id}")
+    @SendTo("/topic/number")
     public NumberResponse getById(@DestinationVariable Long id) {
         return numberService.getNumberById(id);
     }
 
-    @MessageMapping("number/create")
-    @SendTo("/topic/messages")
+    @MessageMapping("/number/create")
+    @SendTo("/topic/number")
     public NumberResponse create(@Payload CreateNumberRequest request) {
         return numberService.createNumber(request);
     }
 
-    @MessageMapping("number/update/{id}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/number/update/{id}")
+    @SendTo("/topic/number")
     public NumberResponse update(@DestinationVariable Long id, @Payload NumberDto numberDto) {
         return numberService.updateNumber(id, numberDto);
     }
 
-    @MessageMapping("number/delete/{id}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/number/delete/{id}")
+    @SendTo("/topic/number")
     public void delete(@DestinationVariable Long id) {
         numberService.deleteNumber(id);
     }
 
     @MessageMapping("/number/photo")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/number")
     public List<PhotoResponse> getAllPhoto(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return photoService.getAllPhotos(pageable);
     }
 
     @MessageMapping("/number/photo/create")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/number")
     public List<PhotoResponse> createPhoto(@Payload List<CreatePhotoRequest> requests) {
         return photoService.createPhoto(requests);
     }
 
     @MessageMapping("/number/photo/delete/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/number")
     public void deletePhoto(@DestinationVariable UUID id) {
         photoService.deletePhoto(id);
     }

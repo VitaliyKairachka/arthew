@@ -22,5 +22,5 @@ public class TaskResponse {
     private String description;
     private String notification;
     private User user;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

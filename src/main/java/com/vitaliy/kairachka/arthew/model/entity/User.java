@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitaliy.kairachka.arthew.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author Vitaliy Kayrachka
@@ -38,4 +40,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<Task> taskSet;
 }

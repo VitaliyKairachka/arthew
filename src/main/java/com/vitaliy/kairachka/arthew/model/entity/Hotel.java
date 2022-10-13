@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,11 +32,9 @@ public class Hotel {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ColumnDefault("0")
     @Column(name = "number_count")
     private Long numberCount;
 
-    @ColumnDefault("0")
     @Column(name = "photo_count")
     private Long photoCount;
 
@@ -42,6 +42,11 @@ public class Hotel {
     @JoinColumn(name = "place_id")
     private Place place;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Number> numbers;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     private Set<Photo> photoSet;
 }

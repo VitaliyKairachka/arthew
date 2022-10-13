@@ -31,57 +31,57 @@ public class PlaceController {
     private final PhotoService photoService;
 
     @MessageMapping("/place")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public List<PlaceResponse> getAll(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return placeService.getAllPlaces(pageable);
     }
 
-    @MessageMapping("/place/{id}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/place/id/{id}")
+    @SendTo("/topic/place")
     public PlaceResponse getById(@DestinationVariable Long id) {
         return placeService.getPlaceById(id);
     }
 
-    @MessageMapping("/place/{name}")
-    @SendTo("/topic/messages")
+    @MessageMapping("/place/name/{name}")
+    @SendTo("/topic/place")
     public PlaceResponse getByName(@DestinationVariable String name) {
         return placeService.getPlaceByName(name);
     }
 
     @MessageMapping("/place/create")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public PlaceResponse create(@Payload CreatePlaceRequest request) {
         return placeService.createPlace(request);
     }
 
     @MessageMapping("/place/update/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public PlaceResponse update(@DestinationVariable Long id, @Payload PlaceDto placeDto) {
         return placeService.updatePlace(id, placeDto);
     }
 
     @MessageMapping("/place/delete/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public void delete(@DestinationVariable Long id) {
         placeService.deletePlace(id);
     }
 
     @MessageMapping("/place/photo")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public List<PhotoResponse> getAllPhoto(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return photoService.getAllPhotos(pageable);
     }
 
     @MessageMapping("/place/photo/create")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public List<PhotoResponse> createPhoto(@Payload List<CreatePhotoRequest> requests) {
         return photoService.createPhoto(requests);
     }
 
     @MessageMapping("/place/photo/delete/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/place")
     public void deletePhoto(@DestinationVariable UUID id) {
         photoService.deletePhoto(id);
     }

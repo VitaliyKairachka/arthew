@@ -32,13 +32,13 @@ public class RegionController {
         return regionService.getAllRegions(pageable);
     }
 
-    @MessageMapping("/region/{id}")
+    @MessageMapping("/region/id/{id}")
     @SendTo("/topic/region")
     public RegionResponse getById(@DestinationVariable Long id) {
         return regionService.getRegionById(id);
     }
 
-    @MessageMapping("/region/{name}")
+    @MessageMapping("/region/name/{name}")
     @SendTo("/topic/region")
     public RegionResponse getByName(@DestinationVariable String name) {
         return regionService.getRegionByName(name);

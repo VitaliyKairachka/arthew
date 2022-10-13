@@ -21,5 +21,5 @@ public class CountryResponse {
     private Long regionCounter;
     private Long placeCounter;
     private Long hotelCounter;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

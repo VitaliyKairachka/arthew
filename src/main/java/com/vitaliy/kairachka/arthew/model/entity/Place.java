@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,11 +32,9 @@ public class Place {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ColumnDefault("0")
     @Column(name = "hotel_count")
     private Long hotelCount;
 
-    @ColumnDefault("0")
     @Column(name = "photo_count")
     private Long photoCount;
 
@@ -43,9 +42,11 @@ public class Place {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "place")
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Hotel> hotels;
 
-    @OneToMany(mappedBy = "place")
+    @JsonIgnore
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private Set<Photo> photoSet;
 }

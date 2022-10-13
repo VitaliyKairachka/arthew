@@ -74,10 +74,10 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "regions", allEntries = true)
+    @CacheEvict(value = { "regions", "countries" }, allEntries = true)
     public RegionResponse createRegion(CreateRegionRequest request) {
         var regionDto = regionMapper.toDtoFromRequest(request);
-        var entity = regionMapper.toEntityFromDto(regionDto);
+        var entity = regionMapper.toEntityFromDto(regionDto).setPlaceCount(0L).setHotelCount(0L);
         var countryDto = regionDto.getCountry();
         if (countryDto != null) {
             var country = countryRepository.findById(countryDto.getId());
@@ -96,8 +96,9 @@ public class RegionServiceImpl implements RegionService {
     @CacheEvict(value = "regions", allEntries = true)
     public RegionResponse updateRegion(Long id, RegionDto regionDto) {
         var target = regionRepository.findById(id);
+        var updateRegion = regionMapper.toEntityFromDto(regionDto);
         if (target.isPresent()) {
-            var update = regionMapper.toEntityFromDto(regionMapper.merge(regionDto, target.get()));
+            var update = regionMapper.merge(target.get(), updateRegion);
             return regionMapper.toResponseFromEntity(regionRepository.save(update));
         } else {
             log.info("Region not found with id: {}", id);
@@ -109,12 +110,13 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "regions", allEntries = true)
+    @CacheEvict(value = { "regions", "countries" }, allEntries = true)
     public void deleteRegion(Long id) {
         var target = regionRepository.findById(id);
         if (target.isPresent()) {
             var country = countryRepository.findById(target.get().getCountry().getId());
             country.ifPresent(countryPresent -> {
+                System.out.println("QWE " + countryPresent.getId());
                 countryPresent.setRegionCounter(countryPresent.getRegionCounter() - 1);
                 countryRepository.save(countryPresent);
             });

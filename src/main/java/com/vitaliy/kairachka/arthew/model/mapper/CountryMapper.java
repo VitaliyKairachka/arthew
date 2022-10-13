@@ -47,13 +47,13 @@ public interface CountryMapper {
     @Mapping(source = "regionCounter", target = "regionCounter")
     @Mapping(source = "placeCounter", target = "placeCounter")
     @Mapping(source = "hotelCounter", target = "hotelCounter")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     CountryResponse toResponseFromEntity(Country entity);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "regionCounter", target = "regionCounter")
-    @Mapping(source = "placeCounter", target = "placeCounter")
-    @Mapping(source = "hotelCounter", target = "hotelCounter")
-    CountryDto merge(Country target);
+    @Mapping(target = "regionCounter", ignore = true)
+    @Mapping(target = "placeCounter", ignore = true)
+    @Mapping(target = "hotelCounter", ignore = true)
+    Country merge(@MappingTarget Country target, Country source);
 }

@@ -1,5 +1,6 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,14 +38,17 @@ public class Photo {
     @Column(name = "file")
     private String file;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Place.class)
     @JoinColumn(name = "place_id")
     private Place place;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Hotel.class)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Number.class)
     @JoinColumn(name = "number_id")
     private Number number;

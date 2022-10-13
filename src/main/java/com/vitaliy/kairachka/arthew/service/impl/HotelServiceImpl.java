@@ -77,7 +77,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "hotels", allEntries = true)
+    @CacheEvict(value = { "hotels", "countries", "places", "regions" }, allEntries = true)
     public HotelResponse createHotel(CreateHotelRequest request) {
         var hotelDto = hotelMapper.toDtoFromRequest(request);
         var entity = hotelMapper.toEntityFromDto(hotelDto);
@@ -85,7 +85,7 @@ public class HotelServiceImpl implements HotelService {
         if (placeDto != null) {
             var place = placeRepository.findById(placeDto.getId());
             place.ifPresent(placePresent -> {
-                entity.setPlace(placePresent);
+                entity.setPlace(placePresent).setNumberCount(0L).setPhotoCount(0L);
                 var placeTmp = placePresent.setHotelCount(place.get().getHotelCount() + 1);
                 placeRepository.save(placeTmp);
 
@@ -111,8 +111,9 @@ public class HotelServiceImpl implements HotelService {
     @CacheEvict(value = "hotels", allEntries = true)
     public HotelResponse updateHotel(Long id, HotelDto hotelDto) {
         var target = hotelRepository.findById(id);
+        var updateHotel = hotelMapper.toEntityFromDto(hotelDto);
         if (target.isPresent()) {
-            var update = hotelMapper.toEntityFromDto(hotelMapper.merge(target.get()));
+            var update = hotelMapper.merge(target.get(), updateHotel);
             log.info("Hotel update with id: {}", id);
             return hotelMapper.toResponseFromEntity(hotelRepository.save(update));
         } else {
@@ -125,7 +126,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "hotels", allEntries = true)
+    @CacheEvict(value = { "hotels", "countries", "places", "regions" }, allEntries = true)
     public void deleteHotel(Long id) {
         var target = hotelRepository.findById(id);
         if (target.isPresent()) {

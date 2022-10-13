@@ -100,8 +100,9 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(value = "users", allEntries = true)
     public UserResponse updateUser(Long id, UserDto userDto) {
         var target = userRepository.findById(id);
+        var updateUser = userMapper.toEntityFromDto(userDto);
         if (target.isPresent()) {
-            var update = userMapper.toEntityFromDto(userMapper.merge(target.get()));
+            var update = userMapper.merge(target.get(), updateUser);
             log.info("User update with id: {}", id);
             return userMapper.toResponseFromEntity(userRepository.save(update));
         } else {

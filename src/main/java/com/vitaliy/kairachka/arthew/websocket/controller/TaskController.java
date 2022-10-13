@@ -32,13 +32,13 @@ public class TaskController {
         return taskService.getAllTasks(pageable);
     }
 
-    @MessageMapping("/task/{id}")
+    @MessageMapping("/task/id/{id}")
     @SendTo("/topic/messages")
     public TaskResponse getById(@DestinationVariable Long id) {
         return taskService.getTaskById(id);
     }
 
-    @MessageMapping("/task/{name}")
+    @MessageMapping("/task/name/{name}")
     @SendTo("/topic/messages")
     public TaskResponse getByName(@DestinationVariable String name) {
         return taskService.getTaskByName(name);

@@ -34,7 +34,7 @@ public class Task {
     @Column(name = "notification")
     private String notification;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @ManyToOne(targetEntity = Task.class)
+    @JoinColumn(name = "user_id")
     private User user;
 }

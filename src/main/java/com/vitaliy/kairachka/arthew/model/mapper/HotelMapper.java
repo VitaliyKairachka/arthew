@@ -6,6 +6,7 @@ import com.vitaliy.kairachka.arthew.model.dto.response.HotelResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Hotel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 /**
  * @author Vitaliy Kayrachka
@@ -34,18 +35,18 @@ public interface HotelMapper {
     @Mapping(target = "photoCount", ignore = true)
     HotelDto toDtoFromRequest(CreateHotelRequest request);
 
-    @Mapping(source = "id", target = "id")
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "numberCount", target = "numberCount")
-    @Mapping(source = "photoCount", target = "photoCount")
-    @Mapping(source = "place", target = "place")
-    HotelDto merge(Hotel target);
+    @Mapping(target = "numberCount", ignore = true)
+    @Mapping(target = "photoCount", ignore = true)
+    @Mapping(target = "place", ignore = true)
+    Hotel merge(@MappingTarget Hotel target, Hotel source);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "numberCount", target = "numberCount")
     @Mapping(source = "photoCount", target = "photoCount")
     @Mapping(source = "place", target = "place")
-    @Mapping(target = "isFound", defaultValue = "true", ignore = true)
+    @Mapping(target = "isFound", ignore = true)
     HotelResponse toResponseFromEntity(Hotel entity);
 }

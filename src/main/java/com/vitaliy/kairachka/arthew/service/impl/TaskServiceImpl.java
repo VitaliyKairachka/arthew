@@ -116,8 +116,9 @@ public class TaskServiceImpl implements TaskService {
     @CacheEvict(value = "tasks", allEntries = true)
     public TaskResponse updateTask(Long id, TaskDto taskDto) {
         var target = taskRepository.findById(id);
+        var updateTask = taskMapper.toEntityFromDto(taskDto);
         if (target.isPresent()) {
-            var update = taskMapper.toEntityFromDto(taskMapper.merge(target.get()));
+            var update = taskMapper.merge(target.get(), updateTask);
             log.info("Task update with id: {}", id);
             return taskMapper.toResponseFromEntity(taskRepository.save(update));
         } else {

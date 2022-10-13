@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello WebSocket</title>
+    <title>Arthew</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -10,6 +10,11 @@
     <script src="/js/app.js"></script>
     <script src="/js/country.js"></script>
     <script src="/js/region.js"></script>
+    <script src="/js/place.js"></script>
+    <script src="/js/hotel.js"></script>
+    <script src="/js/number.js"></script>
+    <script src="/js/task.js"></script>
+    <script src="/js/user.js"></script>
 </head>
 <body>
 <div id="main-content" class="container pt-3">
@@ -27,27 +32,428 @@
 
     <button id="buttonLogout" class="btn btn-primary mt-2 ml-auto">Logout</button>
 
-    <div id="buttons" class="row mt-3">
-        <div class="col-md-12">
-            <form class="form-inline">
-                <button id="getCountryButton" class="btn btn-secondary" type="submit">Country</button>
-                <button id="getRegionButton" class="btn btn-default" type="submit">Region</button>
-                <button id="getPlaceButton" class="btn btn-secondary" type="submit">Place</button>
-                <button id="getHotelButton" class="btn btn-default" type="submit">Hotel</button>
-                <button id="getNumberButton" class="btn btn-secondary" type="submit">Number</button>
-                <button id="getUsersButton" class="btn btn-default" type="submit">Users</button>
-                <button id="getTasksButton" class="btn btn-secondary" type="submit">Tasks</button>
-            </form>
+    <ul class="nav nav-tabs mt-3">
+        <li class="nav-item">
+            <a data-id="country" class="nav-link active" aria-current="page" href="#">Country</a>
+        </li>
+        <li class="nav-item">
+            <a data-id="region" class="nav-link" href="#">Region</a>
+        </li>
+        <li class="nav-item">
+            <a data-id="place" class="nav-link" href="#">Place</a>
+        </li>
+        <li class="nav-item">
+            <a data-id="hotel" class="nav-link" href="#">Hotel</a>
+        </li>
+        <li class="nav-item">
+            <a data-id="number" class="nav-link" href="#">Number</a>
+        </li>
+        <li class="nav-item users-tab">
+            <a data-id="user" class="nav-link" href="#">User</a>
+        </li>
+        <li class="nav-item tasks-tab">
+            <a data-id="task" class="nav-link" href="#">Task</a>
+        </li>
+    </ul>
+
+    <!--    TODO: НАЧАЛО КОНТЕНТА ВКЛАДКИ -->
+    <div class="tab-content tab-content-country">
+        <h3>List of countries</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchCountryID">Country ID</label>
+                <input type="text" class="form-control" id="inputSearchCountryID" placeholder="Enter country ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchCountryName">Country Name</label>
+                <input type="text" class="form-control" id="inputSearchCountryName" placeholder="Enter country name">
+            </div>
+            <button id="searchCountry" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation1" class="table table-striped">
+                    <!--                <table class="table table-striped">-->
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update country</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputCountryID">Country ID</label>
+                <input type="text" class="form-control" id="inputCountryID" placeholder="Enter country ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputCountryName">Country Name</label>
+                <input type="text" class="form-control" id="inputCountryName" placeholder="Enter country name to create or add ID to update">
+            </div>
+            <button id="createOrUpdateCountry" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete country by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputCountryDeleteID">Country ID</label>
+                <input type="text" class="form-control" id="inputCountryDeleteID" placeholder="Enter country ID">
+            </div>
+            <button id="deleteCountry" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <tbody id="messages">
-                </tbody>
-            </table>
+    <!--    TODO: КОНЕЦ КОНТЕНТА ВКЛАДКИ -->
+
+    <!--REGION-->
+    <div class="tab-content tab-content-region" style="display: none;">
+        <h3>List of regions</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchRegionID">Region ID</label>
+                <input type="text" class="form-control" id="inputSearchRegionID" placeholder="Enter region ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchRegionName">Region Name</label>
+                <input type="text" class="form-control" id="inputSearchRegionName" placeholder="Enter region name">
+            </div>
+            <button id="searchRegion" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation2" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update region</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputRegionID">Region ID</label>
+                <input type="text" class="form-control" id="inputRegionID" placeholder="Enter region ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputRegionName">Region Name</label>
+                <input type="text" class="form-control" id="inputRegionName" placeholder="Enter region name to create or add ID to update">
+                <label for="inputCountryIDForRegion">Country id</label>
+                <input type="text" class="form-control" id="inputCountryIDForRegion" placeholder="Enter country ID to create">
+            </div>
+            <button id="createOrUpdateRegion" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete region by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputRegionDeleteID">Region ID</label>
+                <input type="text" class="form-control" id="inputRegionDeleteID" placeholder="Enter region ID">
+            </div>
+            <button id="deleteRegion" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
     </div>
+    <!--REGION-->
+
+    <!--PLACE-->
+    <div class="tab-content tab-content-place" style="display: none;">
+        <h3>List of places</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchPlaceID">Place ID</label>
+                <input type="text" class="form-control" id="inputSearchPlaceID" placeholder="Enter place ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchPlaceName">Place Name</label>
+                <input type="text" class="form-control" id="inputSearchPlaceName" placeholder="Enter place name">
+            </div>
+            <button id="searchPlace" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation3" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update place</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputPlaceID">Place ID</label>
+                <input type="text" class="form-control" id="inputPlaceID" placeholder="Enter place ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputPlaceName">Place Name</label>
+                <input type="text" class="form-control" id="inputPlaceName" placeholder="Enter place name to create or add ID to update">
+                <label for="inputRegionIDForPlace">Region id</label>
+                <input type="text" class="form-control" id="inputRegionIDForPlace" placeholder="Enter region ID to create">
+            </div>
+            <button id="createOrUpdatePlace" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete place by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputPlaceDeleteID">Place ID</label>
+                <input type="text" class="form-control" id="inputPlaceDeleteID" placeholder="Enter place ID">
+            </div>
+            <button id="deletePlace" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+    </div>
+    <!--PLACE -->
+
+    <!--HOTEL-->
+    <div class="tab-content tab-content-hotel" style="display: none;">
+        <h3>List of hotels</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchHotelID">Hotel ID</label>
+                <input type="text" class="form-control" id="inputSearchHotelID" placeholder="Enter hotel ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchHotelName">Hotel Name</label>
+                <input type="text" class="form-control" id="inputSearchHotelName" placeholder="Enter hotel name">
+            </div>
+            <button id="searchHotel" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation4" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update hotel</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputHotelID">Hotel ID</label>
+                <input type="text" class="form-control" id="inputHotelID" placeholder="Enter place ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputHotelName">Hotel Name</label>
+                <input type="text" class="form-control" id="inputHotelName" placeholder="Enter place name to create or add ID to update">
+                <label for="inputPlaceIDForHotel">Place id</label>
+                <input type="text" class="form-control" id="inputPlaceIDForHotel" placeholder="Enter place ID to create">
+            </div>
+            <button id="createOrUpdateHotel" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete hotel by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputHotelDeleteID">Hotel ID</label>
+                <input type="text" class="form-control" id="inputHotelDeleteID" placeholder="Enter place ID">
+            </div>
+            <button id="deleteHotel" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+    </div>
+    <!--HOTEL-->
+
+    <!--NUMBER-->
+    <div class="tab-content tab-content-number" style="display: none;">
+        <h3>List of numbers</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchNumberID">Number ID</label>
+                <input type="text" class="form-control" id="inputSearchNumberID" placeholder="Enter number ID">
+            </div>
+            <button id="searchNumber" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation5" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update number</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputNumberID">Number ID</label>
+                <input type="text" class="form-control" id="inputNumberID" placeholder="Enter number ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputNumberDescription">Number description</label>
+                <input type="text" class="form-control" id="inputNumberDescription" placeholder="Enter number name to create or add ID to update">
+                <label for="inputHotelIDForNumber">Hotel id</label>
+                <input type="text" class="form-control" id="inputHotelIDForNumber" placeholder="Enter hotel id to create">
+            </div>
+            <button id="createOrUpdateNumber" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete number by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputNumberDeleteID">Number ID</label>
+                <input type="text" class="form-control" id="inputNumberDeleteID" placeholder="Enter number ID">
+            </div>
+            <button id="deleteNumber" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+    </div>
+    <!--NUMBER-->
+
+    <!--TASK-->
+    <div class="tab-content tab-content-task" style="display: none;">
+        <h3>List of tasks</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchTaskID">Task ID</label>
+                <input type="text" class="form-control" id="inputSearchTaskID" placeholder="Enter task ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchTaskName">Task Name</label>
+                <input type="text" class="form-control" id="inputSearchTaskName" placeholder="Enter task name">
+            </div>
+            <button id="searchTask" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation6" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update task</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputTaskID">Task ID</label>
+                <input type="text" class="form-control" id="inputTaskID" placeholder="Enter task ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputTaskName">Task Name</label>
+                <input type="text" class="form-control" id="inputTaskName" placeholder="Enter task name to create or add ID to update">
+                <label for="inputUserIDForTask">Country id</label>
+                <input type="text" class="form-control" id="inputUserIDForTask" placeholder="Enter user id to create">
+            </div>
+            <button id="createOrUpdateTask" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete task by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputTaskDeleteID">Task ID</label>
+                <input type="text" class="form-control" id="inputTaskDeleteID" placeholder="Enter task ID">
+            </div>
+            <button id="deleteTask" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+    </div>
+    <!--TASK-->
+
+    <!--USER-->
+    <div class="tab-content tab-content-user" style="display: none;">
+        <h3>List of users</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputSearchUserID">User ID</label>
+                <input type="text" class="form-control" id="inputSearchUserID" placeholder="Enter user ID">
+            </div>
+            <div class="form-group">
+                <label for="inputSearchUserName">User Name</label>
+                <input type="text" class="form-control" id="inputSearchUserName" placeholder="Enter user name">
+            </div>
+            <button id="searchUser" type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <table id="conversation7" class="table table-striped">
+                    <tbody class="messages">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link prev disabled" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link next" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+        <h3>Create or update user</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputUserID">User ID</label>
+                <input type="text" class="form-control" id="inputUserID" placeholder="Enter user ID if you need to update">
+            </div>
+            <div class="form-group">
+                <label for="inputUserName">User login</label>
+                <input type="text" class="form-control" id="inputUserName" placeholder="Enter user login to create or add ID to update">
+                <label for="inputUserPassword">User password</label>
+                <input type="text" class="form-control" id="inputUserPassword" placeholder="Enter user password to create or add ID to update">
+                <label for="inputUserFIO">User FIO</label>
+                <input type="text" class="form-control" id="inputUserFIO" placeholder="Enter user FIO to create or add ID to update">
+                <label for="inputUserRole">User role</label>
+                <input type="text" class="form-control" id="inputUserRole" placeholder="Enter user role to create or add ID to update">
+            </div>
+            <button id="createOrUpdateUser" type="submit" class="btn btn-primary mt-2">Create</button>
+        </form>
+
+        <h3>Delete user by ID</h3>
+        <form class="row">
+            <div class="form-group">
+                <label for="inputUserDeleteID">User ID</label>
+                <input type="text" class="form-control" id="inputUserDeleteID" placeholder="Enter user ID">
+            </div>
+            <button id="deleteUser" type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+    </div>
+    <!--USER-->
+
 </div>
 </body>
 </html>

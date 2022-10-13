@@ -16,6 +16,7 @@ function init() {
 
     $("#buttonLogin").on("click", onClickLogin)
     $("#buttonLogout").on("click", onClickLogout)
+    $('.nav-link').on("click", onClickTab)
 }
 
 function getLocalUser() {
@@ -43,21 +44,17 @@ function onChangeLoggedInStatus(isLoggedIn, role = null) {
     if (isLoggedIn) {
         $("#buttonLogout").css("display", "block")
         $("#login-form").css("display", "none");
-        $('#buttons').css("display", "block");
+        $('.nav').css("display", "flex");
 
         $('#inputLogin').val("");
         $('#inputPassword').val("");
     } else {
         $("#login-form").css("display", "block");
         $("#buttonLogout").css("display", "none");
-        $('#buttons').css("display", "none");
-
-        if (window.clearCountries != null) {
-            window.clearCountries()
-        }
+        $('.tab-content, .nav').css("display", "none");
     }
 
-    const $adminButtons = $('#getUsersButton, #getTasksButton');
+    const $adminButtons = $('.users-tab, .tasks-tab');
 
     if (role === 'ADMIN') {
         $adminButtons.css("display", "block")
@@ -89,4 +86,35 @@ function onClickLogin() {
 function onClickLogout() {
     saveLocalUser(null);
     onChangeLoggedInStatus(false);
+}
+
+function onClickTab(e) {
+    e.preventDefault();
+    $('.nav-link').removeClass("active");
+    $(e.currentTarget).addClass("active");
+
+    const tabName = e.currentTarget.dataset.id;
+    switch (tabName) {
+        case "country":
+            window.showCountriesTab();
+            break;
+        case "region":
+            window.showRegionsTab();
+            break;
+        case "place":
+            window.showPlacesTab();
+            break;
+        case "hotel":
+            window.showHotelsTab();
+            break;
+        case "number":
+            window.showNumbersTab();
+            break;
+        case "task":
+            window.showTasksTab();
+            break;
+        case "user":
+            window.showUsersTab();
+            break;
+    }
 }

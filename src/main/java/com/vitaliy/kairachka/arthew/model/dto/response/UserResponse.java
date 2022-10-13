@@ -22,5 +22,5 @@ public class UserResponse {
     private String password;
     private String fio;
     private Role role;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

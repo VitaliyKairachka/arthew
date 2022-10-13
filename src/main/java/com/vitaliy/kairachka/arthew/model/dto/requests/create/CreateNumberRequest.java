@@ -17,7 +17,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CreateNumberRequest {
 
-    private String name;
     private String description;
     private Hotel hotel;
 }

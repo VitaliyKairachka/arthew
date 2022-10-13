@@ -58,10 +58,10 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "numbers", allEntries = true)
+    @CacheEvict(value = { "numbers", "hotels" }, allEntries = true)
     public NumberResponse createNumber(CreateNumberRequest request) {
         var numberDto = numberMapper.toDtoFromRequest(request);
-        var entity = numberMapper.toEntityFromDto(numberDto);
+        var entity = numberMapper.toEntityFromDto(numberDto).setPhotoCount(0L);
         var hotelEntity = numberDto.getHotel();
         if (hotelEntity != null) {
             var hotel = hotelRepository.findById(hotelEntity.getId());
@@ -80,8 +80,9 @@ public class NumberServiceImpl implements NumberService {
     @CacheEvict(value = "numbers", allEntries = true)
     public NumberResponse updateNumber(Long id, NumberDto numberDto) {
         var target = numberRepository.findById(id);
+        var updateNumber = numberMapper.toEntityFromDto(numberDto);
         if (target.isPresent()) {
-            var update = numberMapper.toEntityFromDto(numberMapper.merge(target.get()));
+            var update = numberMapper.merge(target.get(), updateNumber);
             log.info("Number update with id: {}", id);
             return numberMapper.toResponseFromEntity(numberRepository.save(update));
         } else {
@@ -94,7 +95,7 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "numbers", allEntries = true)
+    @CacheEvict(value = { "numbers", "hotels" }, allEntries = true)
     public void deleteNumber(Long id) {
         var target = numberRepository.findById(id);
         if (target.isPresent()) {

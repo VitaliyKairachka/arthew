@@ -73,7 +73,11 @@ class CountryServiceImpl implements CountryService {
     @Transactional
     @CacheEvict(value = "countries", allEntries = true)
     public CountryResponse createCountry(CreateCountryRequest request) {
-        var entity = countryMapper.toEntityFromRequest(request);
+        var entity = countryMapper
+                .toEntityFromRequest(request)
+                .setRegionCounter(0L)
+                .setPlaceCounter(0L)
+                .setHotelCounter(0L);
         log.info("Create new country with name: {}", entity.getName());
         return countryMapper.toResponseFromEntity(countryRepository.save(entity));
     }
@@ -83,8 +87,10 @@ class CountryServiceImpl implements CountryService {
     @CacheEvict(value = "countries", allEntries = true)
     public CountryResponse updateCountry(Long id, CountryDto countryDto) {
         var target = countryRepository.findById(id);
+        var updateCountry = countryMapper.toEntityFromDto(countryDto);
         if (target.isPresent()) {
-            var update = countryMapper.toEntityFromDto(countryMapper.merge(target.get()));
+            var update = countryMapper.merge(target.get(), updateCountry);
+            System.out.println(update.getName());
             log.info("Country update with id: {}", id);
             return countryMapper.toResponseFromEntity(countryRepository.save(update));
         } else {

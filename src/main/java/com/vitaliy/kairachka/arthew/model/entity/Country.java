@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,19 +33,16 @@ public class Country {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ColumnDefault("0")
     @Column(name = "region_counter")
     private Long regionCounter;
 
-    @ColumnDefault("0")
     @Column(name = "place_count")
     private Long placeCounter;
 
-    @ColumnDefault("0")
     @Column(name = "hotel_count")
     private Long hotelCounter;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Region> regions;
 }

@@ -21,5 +21,5 @@ public class PhotoResponse {
     private UUID id;
     private String name;
     private String file;
-    private Boolean isFound;
+    private Boolean isFound = true;
 }

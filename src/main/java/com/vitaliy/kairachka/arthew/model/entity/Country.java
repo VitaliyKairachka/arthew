@@ -1,24 +1,45 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Vitaliy Kayrachka
  */
-@Data
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@Table(name = "countries")
 public class Country {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
-  private Long regionCounter;
-  private Long placeCounter;
-  private Long hotelCounter;
+    @Column(name = "name", unique = true)
+    private String name;
+
+    @Column(name = "region_counter")
+    private Long regionCounter;
+
+    @Column(name = "place_count")
+    private Long placeCounter;
+
+    @Column(name = "hotel_count")
+    private Long hotelCounter;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Region> regions;
 }

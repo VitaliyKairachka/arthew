@@ -1,30 +1,40 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
 
 /**
  * @author Vitaliy Kayrachka
  */
-@Data
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@Table(name = "tasks")
 public class Task {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
-  private String description;
-  private String notification; //TODO уведомление
+    @Column(name = "name", unique = true)
+    private String name;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
-  private User user;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "notification")
+    private String notification;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -1,30 +1,51 @@
 package com.vitaliy.kairachka.arthew.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Vitaliy Kayrachka
  */
-@Data
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@Table(name = "hotels")
 public class Hotel {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
-  private Long numberCount;
-  private Long photoCount;
+    @Column(name = "name", unique = true)
+    private String name;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
-  private Place place;
+    @Column(name = "number_count")
+    private Long numberCount;
+
+    @Column(name = "photo_count")
+    private Long photoCount;
+
+    @ManyToOne(targetEntity = Place.class)
+    @JoinColumn(name = "place_id")
+    private Place place;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Number> numbers;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hotel")
+    private Set<Photo> photoSet;
 }

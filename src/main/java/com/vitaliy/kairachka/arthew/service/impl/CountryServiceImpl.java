@@ -65,7 +65,7 @@ class CountryServiceImpl implements CountryService {
             log.info("Country not found with name: {}", name);
             return new CountryResponse()
                     .setName(name)
-                    .setIsFound(false);
+                    .setIsFound(true);
         }
     }
 

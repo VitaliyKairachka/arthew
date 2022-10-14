@@ -1,9 +1,7 @@
 package com.vitaliy.kairachka.arthew.model.mapper;
 
-import com.vitaliy.kairachka.arthew.model.dto.HotelDto;
 import com.vitaliy.kairachka.arthew.model.dto.NumberDto;
 import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateNumberRequest;
-import com.vitaliy.kairachka.arthew.model.dto.response.HotelResponse;
 import com.vitaliy.kairachka.arthew.model.dto.response.NumberResponse;
 import com.vitaliy.kairachka.arthew.model.entity.Number;
 import org.mapstruct.Mapper;

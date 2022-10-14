@@ -15,7 +15,7 @@ CREATE TABLE "numbers"
     "hotel_id"    BIGINT       NOT NULL
 );
 CREATE INDEX "numbers_id_hotel_id_index" ON
-    "numbers"("id", "hotel_id");
+    "numbers" ("id", "hotel_id");
 ALTER TABLE
     "numbers"
     ADD PRIMARY KEY ("id");
@@ -28,7 +28,7 @@ CREATE TABLE "hotels"
     "place_id"     BIGINT       NOT NULL
 );
 CREATE INDEX "hotels_place_id_id_index" ON
-    "hotels"("place_id", "id");
+    "hotels" ("place_id", "id");
 ALTER TABLE
     "hotels"
     ADD PRIMARY KEY ("id");
@@ -41,7 +41,7 @@ CREATE TABLE "places"
     "region_id"   BIGINT       NOT NULL
 );
 CREATE INDEX "places_id_region_id_index" ON
-    "places"("id", "region_id");
+    "places" ("id", "region_id");
 ALTER TABLE
     "places"
     ADD PRIMARY KEY ("id");
@@ -54,7 +54,7 @@ CREATE TABLE "regions"
     "country_id"  BIGINT       NOT NULL
 );
 CREATE INDEX "regions_id_country_id_index" ON
-    "regions"("id", "country_id");
+    "regions" ("id", "country_id");
 ALTER TABLE
     "regions"
     ADD PRIMARY KEY ("id");

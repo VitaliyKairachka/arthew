@@ -76,7 +76,7 @@ public class PlaceController {
 
     @MessageMapping("/place/photo/create")
     @SendTo("/topic/place")
-    public List<PhotoResponse> createPhoto(@Payload List<CreatePhotoRequest> requests) {
+    public PhotoResponse createPhoto(@Payload CreatePhotoRequest requests) {
         return photoService.createPhoto(requests);
     }
 

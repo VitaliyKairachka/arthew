@@ -26,38 +26,38 @@ public class TaskController {
     private final TaskService taskService;
 
     @MessageMapping("/task")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public List<TaskResponse> getAll(@Payload PageableRequest page) {
         Pageable pageable = PageRequest.of(page.getPage(), page.getSize());
         return taskService.getAllTasks(pageable);
     }
 
     @MessageMapping("/task/id/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public TaskResponse getById(@DestinationVariable Long id) {
         return taskService.getTaskById(id);
     }
 
     @MessageMapping("/task/name/{name}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public TaskResponse getByName(@DestinationVariable String name) {
         return taskService.getTaskByName(name);
     }
 
     @MessageMapping("/task/create")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public TaskResponse create(@Payload CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 
     @MessageMapping("/task/update/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public TaskResponse update(@DestinationVariable Long id, @Payload TaskDto taskDto) {
         return taskService.updateTask(id, taskDto);
     }
 
     @MessageMapping("/task/delete/{id}")
-    @SendTo("/topic/messages")
+    @SendTo("/topic/task")
     public void delete(@DestinationVariable Long id) {
         taskService.deleteTask(id);
     }

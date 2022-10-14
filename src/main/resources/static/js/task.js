@@ -127,9 +127,16 @@
         e.preventDefault();
         const taskID = $("#inputTaskID").val();
         const taskName = $("#inputTaskName").val();
+        const taskDescription = $("#inputTaskDescription").val();
+        const taskNotification = $("#inputTaskNotification").val();
         const userID = $("#inputUserIDForTask").val();
 
-        const payload = {name: taskName, user: {id: userID}};
+        const payload = {
+            name: taskName,
+            description: taskDescription,
+            notification: taskNotification,
+            user: {id: userID}
+        };
 
         let path = '/app/task/create';
 

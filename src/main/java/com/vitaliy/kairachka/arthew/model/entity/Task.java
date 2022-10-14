@@ -34,7 +34,7 @@ public class Task {
     @Column(name = "notification")
     private String notification;
 
-    @ManyToOne(targetEntity = Task.class)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 }

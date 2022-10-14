@@ -70,7 +70,7 @@ public class NumberController {
 
     @MessageMapping("/number/photo/create")
     @SendTo("/topic/number")
-    public List<PhotoResponse> createPhoto(@Payload List<CreatePhotoRequest> requests) {
+    public PhotoResponse createPhoto(@Payload CreatePhotoRequest requests) {
         return photoService.createPhoto(requests);
     }
 

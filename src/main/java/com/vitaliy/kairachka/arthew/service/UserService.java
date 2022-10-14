@@ -1,11 +1,10 @@
 package com.vitaliy.kairachka.arthew.service;
 
 import com.vitaliy.kairachka.arthew.model.dto.UserDto;
-import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.requests.UserLoginRequest;
+import com.vitaliy.kairachka.arthew.model.dto.requests.create.CreateUserRequest;
 import com.vitaliy.kairachka.arthew.model.dto.response.UserLoginResponse;
 import com.vitaliy.kairachka.arthew.model.dto.response.UserResponse;
-import com.vitaliy.kairachka.arthew.model.entity.User;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

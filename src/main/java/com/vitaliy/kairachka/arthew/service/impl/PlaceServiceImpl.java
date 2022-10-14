@@ -74,7 +74,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "places", "regions" }, allEntries = true)
+    @CacheEvict(value = {"places", "regions"}, allEntries = true)
     public PlaceResponse createPlace(CreatePlaceRequest request) {
         var placeDto = placeMapper.toDtoFromRequest(request);
         var entity = placeMapper.toEntityFromDto(placeDto).setHotelCount(0L).setPhotoCount(0L);
@@ -112,7 +112,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "places", "regions" }, allEntries = true)
+    @CacheEvict(value = {"places", "regions"}, allEntries = true)
     public void deletePlace(Long id) {
         var target = placeRepository.findById(id);
         if (target.isPresent()) {

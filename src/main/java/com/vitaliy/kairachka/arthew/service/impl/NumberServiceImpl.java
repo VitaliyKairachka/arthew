@@ -58,7 +58,7 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "numbers", "hotels" }, allEntries = true)
+    @CacheEvict(value = {"numbers", "hotels"}, allEntries = true)
     public NumberResponse createNumber(CreateNumberRequest request) {
         var numberDto = numberMapper.toDtoFromRequest(request);
         var entity = numberMapper.toEntityFromDto(numberDto).setPhotoCount(0L);
@@ -95,7 +95,7 @@ public class NumberServiceImpl implements NumberService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "numbers", "hotels" }, allEntries = true)
+    @CacheEvict(value = {"numbers", "hotels"}, allEntries = true)
     public void deleteNumber(Long id) {
         var target = numberRepository.findById(id);
         if (target.isPresent()) {

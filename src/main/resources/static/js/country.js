@@ -131,8 +131,6 @@
         const countryName = $("#inputCountryName").val();
 
         const payload = {name: countryName};
-        // TODO: пример объекта внутри объекта
-        // const payload = {name: countryName, country: { id: countryID }};
 
         let path = '/app/country/create';
 

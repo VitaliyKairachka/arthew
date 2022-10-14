@@ -74,7 +74,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "regions", "countries" }, allEntries = true)
+    @CacheEvict(value = {"regions", "countries"}, allEntries = true)
     public RegionResponse createRegion(CreateRegionRequest request) {
         var regionDto = regionMapper.toDtoFromRequest(request);
         var entity = regionMapper.toEntityFromDto(regionDto).setPlaceCount(0L).setHotelCount(0L);
@@ -110,7 +110,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "regions", "countries" }, allEntries = true)
+    @CacheEvict(value = {"regions", "countries"}, allEntries = true)
     public void deleteRegion(Long id) {
         var target = regionRepository.findById(id);
         if (target.isPresent()) {

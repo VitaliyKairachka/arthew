@@ -76,7 +76,7 @@ public class HotelController {
 
     @MessageMapping("/hotel/photo/create")
     @SendTo("/topic/hotel")
-    public List<PhotoResponse> createPhoto(@Payload List<CreatePhotoRequest> requests) {
+    public PhotoResponse createPhoto(@Payload CreatePhotoRequest requests) {
         return photoService.createPhoto(requests);
     }
 

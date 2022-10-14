@@ -77,7 +77,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "hotels", "countries", "places", "regions" }, allEntries = true)
+    @CacheEvict(value = {"hotels", "countries", "places", "regions"}, allEntries = true)
     public HotelResponse createHotel(CreateHotelRequest request) {
         var hotelDto = hotelMapper.toDtoFromRequest(request);
         var entity = hotelMapper.toEntityFromDto(hotelDto);
@@ -126,7 +126,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @Transactional
-    @CacheEvict(value = { "hotels", "countries", "places", "regions" }, allEntries = true)
+    @CacheEvict(value = {"hotels", "countries", "places", "regions"}, allEntries = true)
     public void deleteHotel(Long id) {
         var target = hotelRepository.findById(id);
         if (target.isPresent()) {
